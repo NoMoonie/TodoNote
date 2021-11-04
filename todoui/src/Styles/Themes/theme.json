@@ -1,0 +1,15 @@
+{
+    "main": {
+        "backgroundcolor": "#191919",
+        "textcolor": "#fff",
+        "button": {
+            "backgroundcolor": "",
+            "textcolor": ""
+        },
+        "todo": {
+            "backgroundcolor": "",
+            "textcolor": ""
+        }
+    },
+    "font": "DM Mono"
+}
