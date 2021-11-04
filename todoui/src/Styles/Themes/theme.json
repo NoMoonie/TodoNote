@@ -9,7 +9,9 @@
         "todo": {
             "backgroundcolor": "",
             "textcolor": ""
-        }
+        },
+        "complete": "#fff",
+        "notcomplete": "#bf336d"
     },
     "font": "DM Mono"
 }
