@@ -19,6 +19,7 @@ const Li = styled.li<{ isComplete?: boolean; isSelected?: boolean }>`
     margin: 1em;
     p {
         padding-left: 1em;
+        pointer-events: none;
     }
 `;
 
@@ -40,9 +41,9 @@ const A = styled.a`
     }
 `;
 
-const Todo: FC<ITodo> = ({ title, isComplete }) => {
+const Todo: FC<ITodo> = ({ title, isComplete, isSelected, id, onClick }) => {
     return (
-        <Li isComplete={isComplete}>
+        <Li id={id} isComplete={isComplete} isSelected={isSelected} onClick={onClick}>
             <p>{title}</p>
             <A>
                 <AiOutlineClose />

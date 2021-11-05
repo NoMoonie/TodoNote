@@ -1,17 +1,18 @@
 {
     "main": {
         "backgroundcolor": "#191919",
+        "secondarycolor": "#222",
         "textcolor": "#fff",
         "editor": {
-            "backgroundcolor": "#333333",
+            "backgroundcolor": "#333",
             "textcolor": "#fff"
         },
         "button": {
-            "backgroundcolor": "#333333",
+            "backgroundcolor": "#333",
             "textcolor": "#fff"
         },
         "todo": {
-            "backgroundcolor": "#333333",
+            "backgroundcolor": "#333",
             "hover": "#777",
             "textcolor": "#fff"
         },
