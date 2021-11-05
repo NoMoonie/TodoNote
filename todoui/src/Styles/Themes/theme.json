@@ -1,21 +1,23 @@
 {
     "main": {
         "backgroundcolor": "#191919",
+        "textcolor": "#fff",
         "editor": {
             "backgroundcolor": "#333333",
             "textcolor": "#fff"
         },
-        "textcolor": "#fff",
         "button": {
-            "backgroundcolor": "",
-            "textcolor": ""
+            "backgroundcolor": "#333333",
+            "textcolor": "#fff"
         },
         "todo": {
-            "backgroundcolor": "",
-            "textcolor": ""
+            "backgroundcolor": "#333333",
+            "hover": "#777",
+            "textcolor": "#fff"
         },
         "complete": "#fff",
-        "notcomplete": "#bf336d"
+        "notcomplete": "#bf336d",
+        "selected": "#777"
     },
     "font": "DM Mono"
 }
