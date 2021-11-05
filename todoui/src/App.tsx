@@ -7,6 +7,7 @@ import theme from "./Styles/Themes/theme.json";
 
 const Root = styled.div`
     background-color: ${(props) => props.theme.main.BackgroundColor};
+    overflow-y: hidden;
 `;
 
 function App() {

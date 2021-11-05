@@ -1,6 +1,10 @@
 {
     "main": {
         "backgroundcolor": "#191919",
+        "editor": {
+            "backgroundcolor": "#333333",
+            "textcolor": "#fff"
+        },
         "textcolor": "#fff",
         "button": {
             "backgroundcolor": "",

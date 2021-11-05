@@ -1,7 +1,15 @@
 import React, { FC, useEffect, useState } from "react";
+import styled from "styled-components";
+import { Editor } from "../Components/TextEditor/Editor";
 import Todo from "../Components/Todos/Todo";
 import TodoList from "../Components/Todos/TodoList";
 import IPage from "../Interfaces/page";
+
+const Div = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+`;
 
 const Home: FC<IPage> = (props) => {
     const [todo, setTodo] = useState([]);
@@ -20,13 +28,14 @@ const Home: FC<IPage> = (props) => {
     }, []);
 
     return (
-        <div>
+        <Div>
             <TodoList>
                 {todo.map((item: any) => {
                     return <Todo key={item.id} isComplete={item.isComplete} title={item.title} />;
                 })}
             </TodoList>
-        </div>
+            <Editor />
+        </Div>
     );
 };
 
