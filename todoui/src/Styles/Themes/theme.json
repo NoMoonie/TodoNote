@@ -16,6 +16,11 @@
             "hover": "#777",
             "textcolor": "#fff"
         },
+        "toast": {
+            "backgroundcolor": "#111",
+            "textcolor": "#fff",
+            "progressbarcolor": "#777"
+        },
         "complete": "#fff",
         "notcomplete": "#bf336d",
         "selected": "#777"

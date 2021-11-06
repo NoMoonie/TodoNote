@@ -1,54 +1,60 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
 import ITodo from "../../Interfaces/todos";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
 
 const Li = styled.li<{ isComplete?: boolean; isSelected?: boolean }>`
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
+    grid-template-columns: 1fr 0.2fr;
     color: ${(props) => (props.isComplete ? props.theme.main.complete : props.theme.main.notcomplete)};
-    background-color: ${(props) => props.theme.main.todo.backgroundcolor};
-    background-color: ${(props) =>
-        props.isSelected ? props.theme.main.selected : props.theme.main.todo.backgroundcolor};
+    text-decoration: ${(props) => (props.isComplete ? "line-through" : "")};
     height: 3em;
+    margin: 1em;
+`;
+
+const P = styled.p`
+    display: flex;
+    align-items: center;
     cursor: pointer;
+    background-color: ${(props) => props.theme.main.todo.backgroundcolor};
+    padding-left: 1em;
     :hover {
         background-color: ${(props) => props.theme.main.todo.hover};
-    }
-    margin: 1em;
-    p {
-        padding-left: 1em;
-        pointer-events: none;
     }
 `;
 
 const Button = styled.button`
-    justify-self: end;
     color: ${(props) => props.theme.main.button.textcolor};
-    background-color: #555;
-    cursor: pointer;
-    height: 80%;
-    margin-right: 0.5em;
-    padding: 0.5rem;
+    background: #444;
+    border: 1px solid #444;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: none;
     svg {
         width: 25px;
         height: 25px;
     }
     :hover {
-        background-color: #444;
+        background-color: ${(props) => props.theme.main.todo.hover};
     }
 `;
 
-const Todo: FC<ITodo> = ({ title, isComplete, isSelected, id, onClick }) => {
+const Todo: FC<ITodo> = ({ title, isComplete, isSelected, id, onClick, onComplete, index, onRemove }) => {
     return (
-        <Li id={id} isComplete={isComplete} isSelected={isSelected} onClick={onClick}>
-            <p>{title}</p>
-            <Button>Complete</Button>
+        <Li id={id} isComplete={isComplete} isSelected={isSelected}>
+            <P id={id} onClick={onClick}>
+                {title}
+            </P>
+
+            {isComplete ? (
+                <Button id={id} onClick={() => onRemove(id)}>
+                    <AiOutlineClose />
+                </Button>
+            ) : (
+                <Button id={id} onClick={() => onComplete(index)}>
+                    <AiOutlineCheck />
+                </Button>
+            )}
         </Li>
     );
 };

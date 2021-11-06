@@ -4,4 +4,7 @@ export default interface ITodo {
     title: string;
     isComplete: boolean;
     onClick: any;
+    onComplete: any;
+    onRemove: any;
+    index: number;
 }
