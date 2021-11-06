@@ -23,21 +23,24 @@ const Li = styled.li<{ isComplete?: boolean; isSelected?: boolean }>`
     }
 `;
 
-const A = styled.a`
+const Button = styled.button`
     justify-self: end;
     color: ${(props) => props.theme.main.button.textcolor};
     background-color: #555;
     cursor: pointer;
-    height: 100%;
+    height: 80%;
+    margin-right: 0.5em;
+    padding: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
     svg {
         width: 25px;
         height: 25px;
     }
     :hover {
-        background-color: red;
+        background-color: #444;
     }
 `;
 
@@ -45,9 +48,7 @@ const Todo: FC<ITodo> = ({ title, isComplete, isSelected, id, onClick }) => {
     return (
         <Li id={id} isComplete={isComplete} isSelected={isSelected} onClick={onClick}>
             <p>{title}</p>
-            <A>
-                <AiOutlineClose />
-            </A>
+            <Button>Complete</Button>
         </Li>
     );
 };

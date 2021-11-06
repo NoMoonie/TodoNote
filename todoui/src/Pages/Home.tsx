@@ -18,21 +18,34 @@ const Wrapper = styled.div`
     margin: 1.5em;
 `;
 
-const Button = styled.button`
+const InputWrapper = styled.form`
     display: flex;
-    background: none;
-    border: none;
-    color: white;
-    margin-left: 1.5em;
-    svg {
-        width: 25px;
-        height: 25px;
+    input {
+        width: 100%;
+        outline: none;
+        font-size: 14pt;
+        background: #222;
+        border: none;
+        color: white;
+        :focus {
+            background-color: #333;
+        }
+    }
+    button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #222;
+        color: white;
+        width: 4em;
+        border: none;
     }
 `;
 
 const Home: FC<IPage> = (props) => {
     const [todos, setTodos] = useState([]);
     const [todo, setTodo] = useState({});
+    const [value, setValue] = useState("");
 
     useEffect(() => {
         fetch("https://localhost:5001/api/Todo")
@@ -56,6 +69,40 @@ const Home: FC<IPage> = (props) => {
         setTodo(filterTodo[0]);
     };
 
+    const addTodo = (text: string) => {
+        const newTodo = {
+            id: 0,
+            title: text,
+            isComplete: false,
+            text: "",
+        };
+        const newTodos: any = [...todos, newTodo];
+        setTodos(newTodos);
+        fetch("https://localhost:5001/api/Todo", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newTodo),
+        })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const removeTodo = (id: number) => {};
+
+    const HandleSubmit = (e: any) => {
+        e.preventDefault();
+        if (!value) return;
+
+        addTodo(value);
+        setValue("");
+    };
+
     return (
         <Div>
             <Wrapper>
@@ -72,10 +119,16 @@ const Home: FC<IPage> = (props) => {
                             />
                         );
                     })}
-                    <Button>
-                        <GoDiffAdded />
-                    </Button>
                 </TodoList>
+                <InputWrapper onSubmit={HandleSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Add todo..."
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                    />
+                    <button>Add</button>
+                </InputWrapper>
             </Wrapper>
             <Editor todo={todo} />
             <div></div>
