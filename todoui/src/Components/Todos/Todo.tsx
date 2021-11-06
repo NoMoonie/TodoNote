@@ -10,6 +10,7 @@ const Li = styled.li<{ isComplete?: boolean; isSelected?: boolean }>`
     text-decoration: ${(props) => (props.isComplete ? "line-through" : "")};
     height: 3em;
     margin: 1em;
+    overflow-x: hidden;
 `;
 
 const P = styled.p`
