@@ -214,8 +214,10 @@ project.lock.json
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
-
+#db files (sqlite)
 *.db
+*.db-wal
+*.db-shm
 
 ###
 #react"
