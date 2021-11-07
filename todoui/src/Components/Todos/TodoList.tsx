@@ -30,7 +30,8 @@ const InputWrapper = styled.form`
         background: #222;
         border: none;
         color: white;
-        padding-left: 1em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
         :focus {
             background-color: #333;
         }
@@ -63,7 +64,7 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
 
     const setEditorText = (e: any) => {
         const filterTodo: any = todos.filter((item: any) => {
-            if (item.id == e.target.id) {
+            if (item.id === e.target.id) {
                 return item;
             }
         });
@@ -118,8 +119,8 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
     };
 
     const removeTodo = (id: number) => {
-        const filterTodo = todos.filter((todo: any) => todo.id != id);
-        const deletedTodo = todos.filter((todo: any) => todo.id == id);
+        const filterTodo = todos.filter((todo: any) => todo.id !== id);
+        const deletedTodo = todos.filter((todo: any) => todo.id === id);
         setTodos(filterTodo);
         fetch(`https://localhost:5001/api/Todo?id=${id}`, {
             method: "DELETE",
@@ -157,7 +158,13 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
                 })}
             </Ul>
             <InputWrapper onSubmit={HandleSubmit}>
-                <input type="text" placeholder="Add todo..." value={value} onChange={(e) => setValue(e.target.value)} />
+                <input
+                    maxLength={25}
+                    type="text"
+                    placeholder="Add todo..."
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                />
             </InputWrapper>
             <ToastStyle limit={4} pauseOnHover={false} autoClose={3000} hideProgressBar position="top-center" />
         </Wrapper>
