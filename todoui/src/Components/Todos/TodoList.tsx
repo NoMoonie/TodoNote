@@ -6,6 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Ul = styled.ul`
+    margin: 0;
+    padding: 0;
     text-decoration: none;
     list-style: none;
     background-color: ${(props) => props.theme.main.secondarycolor};
@@ -62,12 +64,9 @@ const ToastStyle = styled(ToastContainer).attrs({
 const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) => {
     const [value, setValue] = useState("");
 
-    const setEditorText = (e: any) => {
-        const filterTodo: any = todos.filter((item: any) => {
-            if (item.id === e.target.id) {
-                return item;
-            }
-        });
+    const setEditorText = (e: any, index: any) => {
+        const filterTodo = todos.filter((todo: any) => todo.id == e.target.id);
+        filterTodo[0].index = index;
         setTodo(filterTodo[0]);
     };
 

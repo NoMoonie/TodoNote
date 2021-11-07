@@ -7,7 +7,7 @@ import { GoDiffAdded } from "react-icons/go";
 
 const Div = styled.div`
     display: grid;
-    grid-template-columns: 0.4fr 1fr 0.5fr;
+    grid-template-columns: 0.3fr 1fr;
     height: 100vh;
 `;
 
@@ -31,8 +31,7 @@ const Home: FC<IPage> = (props) => {
     return (
         <Div>
             <TodoList todos={todos} setTodos={setTodos} todo={todo} setTodo={setTodo} />
-            <Editor todo={todo} />
-            <div></div>
+            <Editor todo={todo} setTodos={setTodos} todos={todos} />
         </Div>
     );
 };

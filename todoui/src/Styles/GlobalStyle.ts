@@ -3,8 +3,6 @@ import Theme from "./Themes/theme.json";
 
 const GlobalStyle = createGlobalStyle`
     *{
-        margin: 0;
-        padding: 0;
         font-family: ${Theme.font}, sans-serif;
         ::selection{
             color: #fff; 
@@ -12,6 +10,8 @@ const GlobalStyle = createGlobalStyle`
         }
     }
     body{
+        margin: 0;
+        padding: 0;
         background-color: ${Theme.main.backgroundcolor};
         color: ${Theme.main.textcolor};
     }

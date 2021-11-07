@@ -13,6 +13,8 @@ const Li = styled.li<{ isComplete?: boolean; isSelected?: boolean }>`
 `;
 
 const P = styled.p`
+    margin: 0;
+    padding: 0;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -25,10 +27,11 @@ const P = styled.p`
     word-break: none;
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ isComplete: boolean }>`
+    cursor: pointer;
     color: ${(props) => props.theme.main.button.textcolor};
     background: #444;
-    border: 1px solid #444;
+    border: none;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,23 +40,23 @@ const Button = styled.button`
         height: 25px;
     }
     :hover {
-        background-color: ${(props) => props.theme.main.todo.hover};
+        background-color: ${(props) => (props.isComplete ? "red" : "green")};
     }
 `;
 
 const Todo: FC<ITodo> = ({ title, isComplete, isSelected, id, onClick, onComplete, index, onRemove }) => {
     return (
         <Li id={id} isComplete={isComplete} isSelected={isSelected}>
-            <P id={id} onClick={onClick}>
+            <P id={id} onClick={(e) => onClick(e, index)}>
                 {title}
             </P>
 
             {isComplete ? (
-                <Button id={id} onClick={() => onRemove(id)}>
+                <Button id={id} onClick={() => onRemove(id)} isComplete={isComplete}>
                     <AiOutlineClose />
                 </Button>
             ) : (
-                <Button id={id} onClick={() => onComplete(index)}>
+                <Button id={id} onClick={() => onComplete(index)} isComplete={isComplete}>
                     <AiOutlineCheck />
                 </Button>
             )}
