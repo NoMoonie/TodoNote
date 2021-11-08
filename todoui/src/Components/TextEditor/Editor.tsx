@@ -96,7 +96,7 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                 setEdit={setEdit}
             />
             <Wrapper edit={edit}>
-                {edit ? <EditorStyle value={value} onChange={(e: any) => update(e)} /> : ""}
+                {edit ? <EditorStyle spellCheck={false} value={value} onChange={(e: any) => update(e)} /> : ""}
                 <MarkDownStyle>
                     <ReactMarkdown
                         children={value}
