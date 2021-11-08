@@ -13,6 +13,7 @@
         },
         "todo": {
             "backgroundcolor": "#333",
+            "selected": "#bf336d",
             "hover": "#777",
             "textcolor": "#fff"
         },
@@ -21,8 +22,11 @@
             "textcolor": "#fff",
             "progressbarcolor": "#777"
         },
-        "complete": "#fff",
-        "notcomplete": "#bf336d",
+        "markdown": {
+            "checkboxcolor": "#0bc601"
+        },
+        "complete": "#b2b2b2",
+        "notcomplete": "#fff",
         "selected": "#777"
     },
     "font": "DM Mono"

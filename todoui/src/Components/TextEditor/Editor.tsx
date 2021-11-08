@@ -49,8 +49,8 @@ const MarkDownStyle = styled.div`
         margin-right: 2em;
     }
     input[type="checkbox"]:checked {
-        background-color: ${(props) => props.theme.main.notcomplete};
-        border: 2px solid ${(props) => props.theme.main.notcomplete};
+        background-color: ${(props) => props.theme.main.markdown.checkboxcolor};
+        border: 2px solid ${(props) => props.theme.main.markdown.checkboxcolor};
     }
 `;
 
