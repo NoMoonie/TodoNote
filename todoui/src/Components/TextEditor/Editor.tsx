@@ -27,7 +27,7 @@ const MarkDownStyle = styled.div`
     overflow-y: auto;
     blockquote {
         background-color: #1a1a1a;
-        padding: 10px;
+        padding: 0.5em;
         border-radius: 1em;
     }
     a {
@@ -36,20 +36,21 @@ const MarkDownStyle = styled.div`
 
     .task-list-item {
         display: flex;
-        align-items: center;
+        align-items: top;
     }
 
     input[type="checkbox"] {
         appearance: none;
-        width: 20px;
-        height: 20px;
+        width: 1em;
+        height: 1em;
         border: 2px solid #555;
         background-clip: content-box;
-        padding: 3px;
-        margin-right: 1em;
+        padding: 2px;
+        margin-right: 2em;
     }
     input[type="checkbox"]:checked {
         background-color: ${(props) => props.theme.main.notcomplete};
+        border: 2px solid ${(props) => props.theme.main.notcomplete};
     }
 `;
 

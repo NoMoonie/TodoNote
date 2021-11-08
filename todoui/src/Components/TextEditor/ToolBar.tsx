@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import styled from "styled-components";
 import IToolbar from "../../Interfaces/toolbar";
 import { toast } from "react-toastify";
+import { AiOutlineEdit, AiOutlineSave } from "react-icons/ai";
 
 const Nav = styled.nav`
     display: grid;
@@ -41,6 +42,11 @@ const Li = styled.li`
     justify-content: center;
     align-items: center;
     margin-right: 1em;
+
+    svg {
+        width: 25px;
+        height: 25px;
+    }
 `;
 
 export const ToolBar: FC<IToolbar> = ({ todo, newText, isSaved, setIsSaved, setTodos, todos, setEdit, edit }) => {
@@ -86,8 +92,12 @@ export const ToolBar: FC<IToolbar> = ({ todo, newText, isSaved, setIsSaved, setT
                 </span>
             </Div>
             <Ul>
-                <Li onClick={() => setEdit(!edit)}>Edit</Li>
-                <Li onClick={saveText}>Save</Li>
+                <Li onClick={() => setEdit(!edit)}>
+                    <AiOutlineEdit />
+                </Li>
+                <Li onClick={saveText}>
+                    <AiOutlineSave />
+                </Li>
             </Ul>
         </Nav>
     );
