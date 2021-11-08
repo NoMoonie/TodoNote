@@ -2,6 +2,7 @@ export const darkTheme = {
     backgroundcolor: "#121212",
     textcolor: "#fff",
     secondarycolor: "#181818",
+    link: "#bf336d",
     font: "",
     todo: {
         backgroundcolor: "#282828",

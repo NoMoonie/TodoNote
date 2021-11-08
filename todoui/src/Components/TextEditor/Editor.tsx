@@ -32,9 +32,16 @@ const MarkDownStyle = styled.div`
         border-radius: 1em;
     }
     a {
-        color: ${(props) => props.theme.todo.notcomplete};
+        color: ${(props) => props.theme.link};
     }
-
+    th {
+        border: 1px solid #555555;
+        padding: 1em;
+    }
+    td {
+        border: 1px solid #404040;
+        padding: 1em;
+    }
     .task-list-item {
         display: flex;
         align-items: top;
@@ -115,6 +122,11 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                                     <code className={className} {...props}></code>
                                 );
                             },
+                            a: ({ node, ...props }) => (
+                                <a target="_blank" href={props.href}>
+                                    {props.children}
+                                </a>
+                            ),
                         }}
                     ></ReactMarkdown>
                 </MarkDownStyle>
