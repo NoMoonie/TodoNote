@@ -1,6 +1,6 @@
 export default interface ITodo {
     id: string;
-    isSelected: boolean;
+    isSelected: any;
     title: string;
     isComplete: boolean;
     onClick: any;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ITodo from "../../Interfaces/todos";
 import { AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
 
-const Li = styled.li<{ isComplete?: boolean; isSelected?: boolean }>`
+const Li = styled.li<{ isComplete?: boolean }>`
     display: grid;
     grid-template-columns: 1fr 0.2fr;
     color: ${(props) => (props.isComplete ? props.theme.main.complete : props.theme.main.notcomplete)};
@@ -12,13 +12,14 @@ const Li = styled.li<{ isComplete?: boolean; isSelected?: boolean }>`
     margin: 1em;
 `;
 
-const P = styled.p`
+const P = styled.p<{ isSelected?: boolean }>`
     margin: 0;
     padding: 0;
     display: flex;
     align-items: center;
     cursor: pointer;
-    background-color: ${(props) => props.theme.main.todo.backgroundcolor};
+    background-color: ${(props) =>
+        props.isSelected ? props.theme.main.todo.selected : props.theme.main.todo.backgroundcolor};
     padding-left: 1em;
     :hover {
         background-color: ${(props) => props.theme.main.todo.hover};
@@ -46,8 +47,8 @@ const Button = styled.button<{ isComplete: boolean }>`
 
 const Todo: FC<ITodo> = ({ title, isComplete, isSelected, id, onClick, onComplete, index, onRemove }) => {
     return (
-        <Li id={id} isComplete={isComplete} isSelected={isSelected}>
-            <P id={id} onClick={(e) => onClick(e, index)}>
+        <Li id={id} isComplete={isComplete}>
+            <P id={id} onClick={(e) => onClick(e, index)} isSelected={isSelected.id == id}>
                 {title}
             </P>
 
