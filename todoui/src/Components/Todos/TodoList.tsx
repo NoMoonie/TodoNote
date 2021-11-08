@@ -10,7 +10,7 @@ const Ul = styled.ul`
     padding: 0;
     text-decoration: none;
     list-style: none;
-    background-color: ${(props) => props.theme.main.secondarycolor};
+    background-color: ${(props) => props.theme.secondarycolor};
     overflow-y: auto;
 `;
 
@@ -29,13 +29,13 @@ const InputWrapper = styled.form`
         width: 100%;
         outline: none;
         font-size: 17pt;
-        background: #222;
+        background: ${(props) => props.theme.input.backgroundcolor};
         border: none;
-        color: white;
+        color: ${(props) => props.theme.input.textcolor};
         padding-left: 0.5em;
         padding-right: 0.5em;
         :focus {
-            background-color: #333;
+            background-color: ${(props) => props.theme.input.focus};
         }
     }
 `;
@@ -53,11 +53,11 @@ const ToastStyle = styled(ToastContainer).attrs({
         display: none;
     }
     .toast {
-        background-color: ${(props) => props.theme.main.toast.backgroundcolor};
-        color: ${(props) => props.theme.main.toast.textcolor};
+        background-color: ${(props) => props.theme.toast.backgroundcolor};
+        color: ${(props) => props.theme.toast.textcolor};
     }
     .progress {
-        background-color: ${(props) => props.theme.main.toast.progressbarcolor};
+        background-color: ${(props) => props.theme.toast.progressbarcolor};
     }
 `;
 

@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import routes from "./Config/routes";
 import GlobalStyle from "./Styles/GlobalStyle";
 import styled, { ThemeProvider } from "styled-components";
-import theme from "./Styles/Themes/theme.json";
+//import theme from "./Styles/Themes/theme.json";
+import { darkTheme, lightTheme } from "./Styles/themes";
 
 const Root = styled.div`
-    background-color: ${(props) => props.theme.main.BackgroundColor};
+    background-color: ${(props) => props.theme.backgroundcolor};
     overflow-y: hidden;
 `;
 
 function App() {
+    const [theme, setTheme] = useState("dark");
+
+    const changeTheme = () => {
+        theme === "dark" ? setTheme("light") : setTheme("dark");
+    };
+
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
             <Root>
                 <GlobalStyle />
                 <Router>

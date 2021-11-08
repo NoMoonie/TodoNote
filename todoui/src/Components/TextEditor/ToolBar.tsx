@@ -31,7 +31,7 @@ const Ul = styled.ul`
 
 const Li = styled.li`
     :hover {
-        background-color: ${(props) => props.theme.main.editor.backgroundcolor};
+        background-color: ${(props) => props.theme.editor.backgroundcolor};
     }
     border: 1px solid white;
     border-radius: 10px;

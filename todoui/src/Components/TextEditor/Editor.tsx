@@ -8,8 +8,8 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const EditorStyle = styled.textarea`
-    background-color: ${(props) => props.theme.main.editor.backgroundcolor};
-    color: ${(props) => props.theme.main.editor.textcolor};
+    background-color: ${(props) => props.theme.editor.backgroundcolor};
+    color: ${(props) => props.theme.editor.textcolor};
     border: none;
     outline: none;
     padding-top: 1rem;
@@ -19,19 +19,19 @@ const EditorStyle = styled.textarea`
 `;
 
 const MarkDownStyle = styled.div`
-    background-color: ${(props) => props.theme.main.secondarycolor};
+    background-color: ${(props) => props.theme.markdown.backgroundcolor};
     padding-left: 1em;
     padding-right: 1em;
     word-wrap: break-word;
     height: 100%;
     overflow-y: auto;
     blockquote {
-        background-color: #1a1a1a;
+        background-color: ${(props) => props.theme.markdown.blockquote};
         padding: 0.5em;
         border-radius: 1em;
     }
     a {
-        color: ${(props) => props.theme.main.notcomplete};
+        color: ${(props) => props.theme.todo.notcomplete};
     }
 
     .task-list-item {
@@ -49,8 +49,8 @@ const MarkDownStyle = styled.div`
         margin-right: 2em;
     }
     input[type="checkbox"]:checked {
-        background-color: ${(props) => props.theme.main.markdown.checkboxcolor};
-        border: 2px solid ${(props) => props.theme.main.markdown.checkboxcolor};
+        background-color: ${(props) => props.theme.markdown.checkboxcolor};
+        border: 2px solid ${(props) => props.theme.markdown.checkboxcolor};
     }
 `;
 
