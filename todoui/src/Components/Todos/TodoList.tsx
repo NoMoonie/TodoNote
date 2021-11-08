@@ -100,7 +100,7 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
     const completeTodo = (index: number) => {
         const newTodos: any = [...todos];
         newTodos[index].isComplete = true;
-        setTodo(newTodos);
+        setTodos(newTodos);
         fetch(`https://localhost:5001/api/Todo?id=${newTodos[index].id}`, {
             method: "PUT",
             headers: {
@@ -147,7 +147,7 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
                             key={item.id}
                             isComplete={item.isComplete}
                             title={item.title}
-                            isSelected={false}
+                            isSelected={todo}
                             onClick={setEditorText}
                             onComplete={completeTodo}
                             onRemove={removeTodo}
