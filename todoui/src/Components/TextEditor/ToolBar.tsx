@@ -10,6 +10,7 @@ const Nav = styled.nav`
     border-bottom: 1px solid white;
     border-top: 1px solid white;
     height: 3em;
+    color: ${(props) => props.theme.textcolor};
 `;
 
 const Div = styled.div`
@@ -33,6 +34,7 @@ const Li = styled.li`
     :hover {
         background-color: ${(props) => props.theme.editor.backgroundcolor};
     }
+    color: ${(props) => props.theme.button.textcolor};
     border: 1px solid white;
     border-radius: 10px;
     cursor: pointer;

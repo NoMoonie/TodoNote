@@ -1,9 +1,8 @@
 import styled, { createGlobalStyle } from "styled-components";
-import Theme from "./Themes/theme.json";
 
 const GlobalStyle = createGlobalStyle`
     *{
-        font-family: ${Theme.font}, sans-serif;
+        font-family: "DM Mono", sans-serif;
         ::selection{
             color: #fff; 
             background-color:#fc5185;
@@ -12,8 +11,8 @@ const GlobalStyle = createGlobalStyle`
     body{
         margin: 0;
         padding: 0;
-        background-color: ${Theme.main.backgroundcolor};
-        color: ${Theme.main.textcolor};
+        background-color: #fff;
+        color: #000;
     }
 
     ::-webkit-scrollbar{

@@ -90,6 +90,7 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
             .then((data) => {
                 const newTodos: any = [...todos, data];
                 setTodos(newTodos);
+                setTodo(newTodo);
                 toast(`${text} Added!`);
             })
             .catch((err) => {

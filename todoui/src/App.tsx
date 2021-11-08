@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import routes from "./Config/routes";
 import GlobalStyle from "./Styles/GlobalStyle";
 import styled, { ThemeProvider } from "styled-components";
-//import theme from "./Styles/Themes/theme.json";
 import { darkTheme, lightTheme } from "./Styles/themes";
 
 const Root = styled.div`

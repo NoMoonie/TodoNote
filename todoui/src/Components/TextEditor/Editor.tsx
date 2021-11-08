@@ -20,6 +20,7 @@ const EditorStyle = styled.textarea`
 
 const MarkDownStyle = styled.div`
     background-color: ${(props) => props.theme.markdown.backgroundcolor};
+    color: ${(props) => props.theme.markdown.textcolor};
     padding-left: 1em;
     padding-right: 1em;
     word-wrap: break-word;
