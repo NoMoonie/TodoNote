@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { CodeEditor } from "../CodeEditor/CodeEditor";
 
 const EditorStyle = styled.textarea`
     background-color: ${(props) => props.theme.editor.backgroundcolor};
@@ -90,6 +91,8 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
         } else setIsSaved(true);
     };
 
+    //<EditorStyle spellCheck={false} value={value} onChange={(e: any) => update(e)} />
+
     return (
         <Div>
             <ToolBar
@@ -103,7 +106,7 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                 setEdit={setEdit}
             />
             <Wrapper edit={edit}>
-                {edit ? <EditorStyle spellCheck={false} value={value} onChange={(e: any) => update(e)} /> : ""}
+                {edit ? <CodeEditor value={value} onChange={setValue} /> : ""}
                 <MarkDownStyle>
                     <ReactMarkdown
                         children={value}
