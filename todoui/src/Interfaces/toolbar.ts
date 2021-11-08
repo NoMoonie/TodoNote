@@ -5,4 +5,6 @@ export default interface IToolbar {
     setTodos: any;
     todos: any;
     setIsSaved: any;
+    edit: boolean;
+    setEdit: any;
 }

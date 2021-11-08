@@ -13,22 +13,50 @@ const EditorStyle = styled.textarea`
     border: none;
     outline: none;
     padding-top: 1rem;
-    overflow-y: auto;
     resize: none;
     font-size: 12pt;
-`;
-
-const MarkDownStyle = styled.section`
-    background-color: ${(props) => props.theme.main.secondarycolor};
-    outline: none;
-    padding-left: 1em;
-    padding-right: 1em;
     overflow-y: auto;
 `;
 
-const Wrapper = styled.div`
+const MarkDownStyle = styled.div`
+    background-color: ${(props) => props.theme.main.secondarycolor};
+    padding-left: 1em;
+    padding-right: 1em;
+    word-wrap: break-word;
+    height: 100%;
+    overflow-y: auto;
+    blockquote {
+        background-color: #1a1a1a;
+        padding: 10px;
+        border-radius: 1em;
+    }
+    a {
+        color: ${(props) => props.theme.main.notcomplete};
+    }
+
+    .task-list-item {
+        display: flex;
+        align-items: center;
+    }
+
+    input[type="checkbox"] {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #555;
+        background-clip: content-box;
+        padding: 3px;
+        margin-right: 1em;
+    }
+    input[type="checkbox"]:checked {
+        background-color: ${(props) => props.theme.main.notcomplete};
+    }
+`;
+
+const Wrapper = styled.div<{ edit: boolean }>`
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: ${(props) => (props.edit ? "1fr 1fr" : "1fr")};
+    grid-template-rows: 90vh;
 `;
 
 const Div = styled.div`
@@ -40,6 +68,7 @@ const Div = styled.div`
 export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
     const [value, setValue] = useState("");
     const [isSaved, setIsSaved] = useState(true);
+    const [edit, setEdit] = useState(false);
 
     useEffect(() => {
         setValue(todo.text);
@@ -61,9 +90,11 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                 setTodos={setTodos}
                 todos={todos}
                 setIsSaved={setIsSaved}
+                edit={edit}
+                setEdit={setEdit}
             />
-            <Wrapper>
-                <EditorStyle value={value} onChange={(e: any) => update(e)} />
+            <Wrapper edit={edit}>
+                {edit ? <EditorStyle value={value} onChange={(e: any) => update(e)} /> : ""}
                 <MarkDownStyle>
                     <ReactMarkdown
                         children={value}

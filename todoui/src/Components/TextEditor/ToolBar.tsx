@@ -14,6 +14,9 @@ const Nav = styled.nav`
 const Div = styled.div`
     display: flex;
     align-items: center;
+    span {
+        margin-left: 1em;
+    }
 `;
 
 const Ul = styled.ul`
@@ -21,7 +24,6 @@ const Ul = styled.ul`
     align-items: center;
     justify-content: end;
     list-style: none;
-
     margin: 0;
     padding: 0;
 `;
@@ -38,9 +40,10 @@ const Li = styled.li`
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 1em;
 `;
 
-export const ToolBar: FC<IToolbar> = ({ todo, newText, isSaved, setIsSaved, setTodos, todos }) => {
+export const ToolBar: FC<IToolbar> = ({ todo, newText, isSaved, setIsSaved, setTodos, todos, setEdit, edit }) => {
     const saveText = () => {
         const oldText = todo.text;
         const updateText = newText;
@@ -83,6 +86,7 @@ export const ToolBar: FC<IToolbar> = ({ todo, newText, isSaved, setIsSaved, setT
                 </span>
             </Div>
             <Ul>
+                <Li onClick={() => setEdit(!edit)}>Edit</Li>
                 <Li onClick={saveText}>Save</Li>
             </Ul>
         </Nav>
