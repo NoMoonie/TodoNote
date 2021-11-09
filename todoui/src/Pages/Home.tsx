@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Editor } from "../Components/TextEditor/Editor";
+import { Editor } from "../Components/Editor/Editor";
 import TodoList from "../Components/Todos/TodoList";
 import IPage from "../Interfaces/page";
 import { GoDiffAdded } from "react-icons/go";
