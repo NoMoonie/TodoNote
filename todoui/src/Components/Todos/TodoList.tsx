@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
-import ITodoList from "../../Interfaces/todolist";
+import ITodoList from "../../Interfaces/todo/todolist";
 import Todo from "./Todo";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

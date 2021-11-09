@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import ITodo from "../../Interfaces/todos";
+import ITodo from "../../Interfaces/todo/todos";
 import { AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
 
 const Li = styled.li<{ isComplete?: boolean }>`
