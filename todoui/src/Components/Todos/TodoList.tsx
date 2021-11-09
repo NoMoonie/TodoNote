@@ -75,7 +75,7 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
             id: 0,
             title: text,
             isComplete: false,
-            text: "",
+            text: `# ${text}`,
         };
         fetch("https://localhost:5001/api/Todo", {
             method: "POST",
