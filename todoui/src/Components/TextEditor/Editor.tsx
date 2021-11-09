@@ -8,17 +8,6 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CodeEditor } from "../CodeEditor/CodeEditor";
 
-const EditorStyle = styled.textarea`
-    background-color: ${(props) => props.theme.editor.backgroundcolor};
-    color: ${(props) => props.theme.editor.textcolor};
-    border: none;
-    outline: none;
-    padding-top: 1rem;
-    resize: none;
-    font-size: 12pt;
-    overflow-y: auto;
-`;
-
 const MarkDownStyle = styled.div`
     background-color: ${(props) => props.theme.markdown.backgroundcolor};
     color: ${(props) => props.theme.markdown.textcolor};
@@ -65,7 +54,7 @@ const MarkDownStyle = styled.div`
 
 const Wrapper = styled.div<{ edit: boolean }>`
     display: grid;
-    grid-template-columns: ${(props) => (props.edit ? "1fr 1fr" : "1fr")};
+    grid-template-columns: ${(props) => (props.edit ? "1fr 1fr" : "0.3fr 1fr 0.3fr")};
     grid-template-rows: 90vh;
 `;
 
@@ -106,7 +95,7 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                 setEdit={setEdit}
             />
             <Wrapper edit={edit}>
-                {edit ? <CodeEditor value={value} onChange={setValue} /> : ""}
+                {edit ? <CodeEditor value={value} onChange={setValue} /> : <div></div>}
                 <MarkDownStyle>
                     <ReactMarkdown
                         children={value}
