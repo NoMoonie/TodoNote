@@ -54,7 +54,7 @@ const MarkDownStyle = styled.div`
 
 const Wrapper = styled.div<{ edit: boolean }>`
     display: grid;
-    grid-template-columns: ${(props) => (props.edit ? "1fr 1fr" : "0.3fr 1fr 0.3fr")};
+    grid-template-columns: ${(props) => (props.edit ? "1fr 1fr" : "0.1fr 1fr 0.1fr")};
     grid-template-rows: 90vh;
 `;
 
