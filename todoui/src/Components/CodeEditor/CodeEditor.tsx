@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import "codemirror/lib/codemirror.css";
-import "codemirror/theme/material-palenight.css";
+import "codemirror/theme/nord.css";
 import "codemirror/mode/markdown/markdown";
 import { Controlled as ControlledEditor } from "react-codemirror2";
 import styled from "styled-components";
@@ -9,6 +9,12 @@ import ICodeEditor from "../../Interfaces/codeEditor";
 const EditorWrapper = styled.div`
     background-color: ${(props) => props.theme.editor.backgroundcolor};
     color: ${(props) => props.theme.editor.textcolor};
+    .CodeMirror {
+        height: 90vh;
+        word-wrap: break-word;
+        width: 1fr;
+    }
+    overflow: auto;
 `;
 
 export const CodeEditor: FC<ICodeEditor> = ({ value, onChange }) => {
@@ -25,8 +31,7 @@ export const CodeEditor: FC<ICodeEditor> = ({ value, onChange }) => {
                     lineWrapping: true,
                     lint: false,
                     mode: "markdown",
-                    theme: "material-palenight",
-                    viewportMargin: Infinity,
+                    theme: "nord",
                 }}
             />
         </EditorWrapper>
