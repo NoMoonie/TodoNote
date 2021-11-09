@@ -73,15 +73,6 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
         setValue(todo.text);
     }, [todo.id]);
 
-    const update = (e: any) => {
-        setValue(e.target.value);
-        if (e.target.value != todo.text) {
-            setIsSaved(false);
-        } else setIsSaved(true);
-    };
-
-    //<EditorStyle spellCheck={false} value={value} onChange={(e: any) => update(e)} />
-
     return (
         <Div>
             <ToolBar
