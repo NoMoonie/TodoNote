@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import IEditor from "../../Interfaces/editor";
-import { ToolBar } from "./ToolBar";
+import NavBar from "./NavBar";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -75,7 +75,7 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
 
     return (
         <Div>
-            <ToolBar
+            <NavBar
                 todo={todo}
                 newText={value}
                 isSaved={isSaved}

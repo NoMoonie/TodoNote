@@ -1,8 +1,12 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
 import IToolbar from "../../Interfaces/toolbar";
 import { toast } from "react-toastify";
 import { AiOutlineEdit, AiOutlineSave } from "react-icons/ai";
+import { IoIosArrowDown } from "react-icons/io";
+
+import NavItems from "../NavBar/NavItems";
+import DropDown from "../NavBar/DropDown";
 
 const Nav = styled.nav`
     display: grid;
@@ -11,14 +15,6 @@ const Nav = styled.nav`
     border-top: 1px solid white;
     height: 3em;
     color: ${(props) => props.theme.textcolor};
-`;
-
-const Div = styled.div`
-    display: flex;
-    align-items: center;
-    span {
-        margin-left: 1em;
-    }
 `;
 
 const Ul = styled.ul`
@@ -30,28 +26,15 @@ const Ul = styled.ul`
     padding: 0;
 `;
 
-const Li = styled.li`
-    :hover {
-        background-color: ${(props) => props.theme.editor.backgroundcolor};
-    }
-    color: ${(props) => props.theme.button.textcolor};
-    border: 1px solid white;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 3rem;
-    height: 2em;
+const Div = styled.div`
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-right: 1em;
-
-    svg {
-        width: 25px;
-        height: 25px;
+    span {
+        margin-left: 1em;
     }
 `;
 
-export const ToolBar: FC<IToolbar> = ({ todo, newText, isSaved, setIsSaved, setTodos, todos, setEdit, edit }) => {
+const NavBar: FC<IToolbar> = ({ todo, newText, isSaved, setIsSaved, setTodos, todos, setEdit, edit }) => {
     const saveText = () => {
         const oldText = todo.text;
         const updateText = newText;
@@ -94,13 +77,14 @@ export const ToolBar: FC<IToolbar> = ({ todo, newText, isSaved, setIsSaved, setT
                 </span>
             </Div>
             <Ul>
-                <Li onClick={() => setEdit(!edit)}>
-                    <AiOutlineEdit />
-                </Li>
-                <Li onClick={saveText}>
-                    <AiOutlineSave />
-                </Li>
+                <NavItems icon={<AiOutlineEdit />} onClick={() => setEdit(!edit)} />
+                <NavItems icon={<AiOutlineSave />} onClick={() => saveText()} />
+                <NavItems icon={<IoIosArrowDown />}>
+                    <DropDown />
+                </NavItems>
             </Ul>
         </Nav>
     );
 };
+
+export default NavBar;
