@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
-import IEditor from "../../Interfaces/editor";
+import IEditor from "../../Interfaces/editor/editor";
 import NavBar from "../NavBar/NavBar";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
