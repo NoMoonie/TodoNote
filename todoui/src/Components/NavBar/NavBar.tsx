@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 import { AiOutlineEdit, AiOutlineSave } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
 
-import NavItems from "../NavBar/NavItems";
-import DropDown from "../NavBar/DropDown";
+import NavItems from "./NavItems";
+import DropDown from "./DropDown";
 
 const Nav = styled.nav`
     display: grid;

@@ -4,6 +4,9 @@ import ITodoList from "../../Interfaces/todo/todolist";
 import Todo from "./Todo";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AddTodoModal from "./AddTodoModal";
+import Button from "../Button/Button";
+import { AnimatePresence } from "framer-motion";
 
 const Ul = styled.ul`
     margin: 0;
@@ -21,23 +24,12 @@ const Wrapper = styled.div`
     overflow-y: auto;
 `;
 
-const InputWrapper = styled.form`
+const InputWrapper = styled.div`
     border-top: 1px solid white;
     border-bottom: 1px solid white;
     display: flex;
-    input {
-        width: 100%;
-        outline: none;
-        font-size: 17pt;
-        background: ${(props) => props.theme.input.backgroundcolor};
-        border: none;
-        color: ${(props) => props.theme.input.textcolor};
-        padding-left: 0.5em;
-        padding-right: 0.5em;
-        :focus {
-            background-color: ${(props) => props.theme.input.focus};
-        }
-    }
+    justify-content: center;
+    align-items: center;
 `;
 
 const ToastStyle = styled(ToastContainer).attrs({
@@ -55,6 +47,7 @@ const ToastStyle = styled(ToastContainer).attrs({
     .toast {
         background-color: ${(props) => props.theme.toast.backgroundcolor};
         color: ${(props) => props.theme.toast.textcolor};
+        border: ${(props) => props.theme.toast.border};
     }
     .progress {
         background-color: ${(props) => props.theme.toast.progressbarcolor};
@@ -63,6 +56,7 @@ const ToastStyle = styled(ToastContainer).attrs({
 
 const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) => {
     const [value, setValue] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
 
     const setEditorText = (e: any, index: any) => {
         const filterTodo = todos.filter((todo: any) => todo.id == e.target.id);
@@ -157,14 +151,20 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
                     );
                 })}
             </Ul>
-            <InputWrapper onSubmit={HandleSubmit}>
-                <input
-                    maxLength={25}
-                    type="text"
-                    placeholder="Add todo..."
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                />
+            <InputWrapper>
+                <div>
+                    <Button onClick={() => setModalOpen(!modalOpen)}>Add Todo</Button>
+                </div>
+                <AnimatePresence>
+                    {modalOpen && (
+                        <AddTodoModal
+                            HandleClose={() => setModalOpen(false)}
+                            HandleSubmit={HandleSubmit}
+                            value={value}
+                            setValue={setValue}
+                        />
+                    )}
+                </AnimatePresence>
             </InputWrapper>
             <ToastStyle limit={4} pauseOnHover={false} autoClose={3000} hideProgressBar position="top-center" />
         </Wrapper>

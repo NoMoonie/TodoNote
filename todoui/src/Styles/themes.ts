@@ -23,20 +23,25 @@ export const darkTheme = {
         blockquote: "#121212",
     },
     button: {
-        backgroundcolor: "#404040",
+        backgroundcolor: "#282828",
         textcolor: "#fff",
+        hover: "#404040",
+        border: "none",
     },
     buttonprimary: {
-        backgroundcolor: "",
-        textcolor: "",
-    },
-    toast: {
         backgroundcolor: "#181818",
         textcolor: "#fff",
+        hover: "#282828",
+        border: "1px solid #fff",
+    },
+    toast: {
+        backgroundcolor: "#282828",
+        textcolor: "#fff",
         progressbarcolor: "",
+        border: "1px solid #404040",
     },
     input: {
-        backgroundcolor: "#181818",
+        backgroundcolor: "#282828",
         textcolor: "#fff",
         focus: "#404040",
     },
