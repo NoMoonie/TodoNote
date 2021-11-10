@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import IToolbar from "../../Interfaces/toolbar";
+import IToolbar from "../../Interfaces/navBar";
 import { toast } from "react-toastify";
 import { AiOutlineEdit, AiOutlineSave } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";

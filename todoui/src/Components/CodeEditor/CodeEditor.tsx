@@ -4,7 +4,7 @@ import "codemirror/theme/nord.css";
 import "codemirror/mode/markdown/markdown";
 import { Controlled as ControlledEditor } from "react-codemirror2";
 import styled from "styled-components";
-import ICodeEditor from "../../Interfaces/codeEditor";
+import ICodeEditor from "../../Interfaces/editor/codeEditor";
 
 const EditorWrapper = styled.div`
     background-color: ${(props) => props.theme.editor.backgroundcolor};
