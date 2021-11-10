@@ -1,4 +1,4 @@
-import IRoute from "../Interfaces/route";
+import IRoute from "../Interfaces/pages/route";
 import HomePage from "../Pages/Home";
 
 const routes: IRoute[] = [
