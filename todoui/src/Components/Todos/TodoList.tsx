@@ -24,12 +24,22 @@ const Wrapper = styled.div`
     overflow-y: auto;
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.form`
     border-top: 1px solid white;
     border-bottom: 1px solid white;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    input[type="text"] {
+        width: 100%;
+        outline: none;
+        font-size: 15pt;
+        background: ${(props) => props.theme.input.backgroundcolor};
+        color: ${(props) => props.theme.input.textcolor};
+        padding: 0.5em;
+        border: none;
+        :focus {
+            background-color: ${(props) => props.theme.input.focus};
+        }
+    }
 `;
 
 const ToastStyle = styled(ToastContainer).attrs({
@@ -56,7 +66,6 @@ const ToastStyle = styled(ToastContainer).attrs({
 
 const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) => {
     const [value, setValue] = useState("");
-    const [modalOpen, setModalOpen] = useState(false);
 
     const setEditorText = (e: any, index: any) => {
         const filterTodo = todos.filter((todo: any) => todo.id == e.target.id);
@@ -151,20 +160,14 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
                     );
                 })}
             </Ul>
-            <InputWrapper>
-                <div>
-                    <Button onClick={() => setModalOpen(!modalOpen)}>Add Todo</Button>
-                </div>
-                <AnimatePresence>
-                    {modalOpen && (
-                        <AddTodoModal
-                            HandleClose={() => setModalOpen(false)}
-                            HandleSubmit={HandleSubmit}
-                            value={value}
-                            setValue={setValue}
-                        />
-                    )}
-                </AnimatePresence>
+            <InputWrapper onSubmit={HandleSubmit}>
+                <input
+                    type="text"
+                    maxLength={25}
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    placeholder="Add todo..."
+                />
             </InputWrapper>
             <ToastStyle limit={4} pauseOnHover={false} autoClose={3000} hideProgressBar position="top-center" />
         </Wrapper>
