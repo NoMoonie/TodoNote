@@ -9,6 +9,11 @@ interface todoObject {
     text: string;
 }
 
+interface IUpdate {
+    text: string;
+    index: number;
+}
+
 interface ITodoState {
     value: todoObject[];
 }
@@ -21,7 +26,11 @@ export const todoSlice = createSlice({
     name: "todos",
     initialState,
     reducers: {
-        updateText: (state, action: PayloadAction<string>) => {},
+        updateText: (state, action: PayloadAction<IUpdate>) => {
+            const newState = [...state.value];
+            newState[action.payload.index].text = action.payload.text;
+            state.value = newState;
+        },
         deleteTodo: (state, action: PayloadAction<number>) => {
             const filterTodo = state.value.filter((todo: any) => todo.id !== action.payload);
             state.value = filterTodo;
@@ -52,6 +61,6 @@ export const todoSlice = createSlice({
     },
 });
 
-export const { addTodo, setDataBaseState, completeTodo, deleteTodo } = todoSlice.actions;
+export const { addTodo, setDataBaseState, completeTodo, deleteTodo, updateText } = todoSlice.actions;
 
 export default todoSlice.reducer;
