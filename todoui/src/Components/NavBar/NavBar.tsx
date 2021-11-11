@@ -7,6 +7,7 @@ import { IoIosArrowDown } from "react-icons/io";
 
 import NavItems from "./NavItems";
 import DropDown from "./DropDown";
+import { putReq } from "../../Api/function";
 
 const Nav = styled.nav`
     display: grid;
@@ -45,28 +46,16 @@ const NavBar: FC<IToolbar> = ({ todo, newText, isSaved, setIsSaved, setTodos, to
             isComplete: todo.isComplete,
             text: newText,
         };
-
         if (oldText === updateText) {
             return;
         }
-
         const newTodos = [...todos];
         newTodos[todo.index].text = newText;
         setTodos(newTodos);
         setIsSaved(true);
-
-        fetch(`https://localhost:5001/api/Todo?id=${todo.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updatedTodo),
-        })
-            .then((res) => {
-                console.log(res);
-                toast(`${todo.title} Saved! ✔️`);
-            })
-            .catch((err) => console.log(err));
+        putReq(todo.id, updatedTodo).then((data) => {
+            toast(`${data.title} Saved! ✔️`);
+        });
     };
     return (
         <Nav>

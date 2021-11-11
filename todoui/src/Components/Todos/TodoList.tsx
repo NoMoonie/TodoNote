@@ -7,8 +7,10 @@ import "react-toastify/dist/ReactToastify.css";
 import AddTodoModal from "./AddTodoModal";
 import Button from "../Button/Button";
 import { AnimatePresence } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../App/Store";
+import { addTodo, completeTodo, deleteTodo } from "../../features/todoSlice";
+import { deleteReq, postReq, putReq } from "../../Api/function";
 
 const Ul = styled.ul`
     margin: 0;
@@ -69,86 +71,48 @@ const ToastStyle = styled(ToastContainer).attrs({
 const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) => {
     const [value, setValue] = useState("");
 
+    const dispatch = useDispatch();
+
     const setEditorText = (e: any, index: any) => {
         const filterTodo = todos.filter((todo: any) => todo.id == e.target.id);
-        filterTodo[0].index = index;
+        //filterTodo[0].index = index;
         setTodo(filterTodo[0]);
     };
 
-    const addTodo = (text: string) => {
+    const addTodoTo = (text: string) => {
         const newTodo = {
             id: 0,
             title: text,
             isComplete: false,
             text: `# ${text}`,
         };
-        fetch("https://localhost:5001/api/Todo", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newTodo),
-        })
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                const newTodos: any = [...todos, data];
-                setTodos(newTodos);
-                setTodo(data);
-                toast(`${text} Added!`);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        postReq(newTodo).then((data) => {
+            dispatch(addTodo(data));
+            toast(`${data.title} Added!`);
+        });
     };
 
-    const completeTodo = (index: number) => {
-        const newTodos: any = [...todos];
-        newTodos[index].isComplete = true;
-        setTodos(newTodos);
-        fetch(`https://localhost:5001/api/Todo?id=${newTodos[index].id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newTodos[index]),
-        })
-            .then((res) => {
-                console.log(res);
-                toast(`${newTodos[index].title} Completed! ✔️`);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const completeTodoTo = (index: number) => {
+        dispatch(completeTodo(index));
     };
 
     const removeTodo = (id: number) => {
-        const filterTodo = todos.filter((todo: any) => todo.id !== id);
-        const deletedTodo = todos.filter((todo: any) => todo.id === id);
-        setTodos(filterTodo);
-        fetch(`https://localhost:5001/api/Todo?id=${id}`, {
-            method: "DELETE",
-        })
-            .then((res) => {
-                toast(`${deletedTodo[0].title} Deleted! ❌`);
-            })
-            .catch((err) => {});
+        dispatch(deleteTodo(id));
     };
 
     const HandleSubmit = (e: any) => {
         e.preventDefault();
         if (!value) return;
-        addTodo(value);
+        addTodoTo(value);
         setValue("");
     };
 
-    const testTodos = useSelector((state: RootState) => state.todos.value);
+    const Todos = useSelector((state: RootState) => state.todos.value);
 
     return (
         <Wrapper>
             <Ul>
-                {testTodos.map((item: any, index: number) => {
+                {Todos.map((item: any, index: number) => {
                     return (
                         <Todo
                             id={item.id}
@@ -157,7 +121,7 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
                             title={item.title}
                             isSelected={todo}
                             onClick={setEditorText}
-                            onComplete={completeTodo}
+                            onComplete={completeTodoTo}
                             onRemove={removeTodo}
                             index={index}
                         />

@@ -1,7 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
+import { deleteReq, putReq } from "../Api/function";
+
+interface todoObject {
+    id: number;
+    title: string;
+    isComplete: boolean;
+    text: string;
+}
 
 interface ITodoState {
-    value: object[];
+    value: todoObject[];
 }
 
 const initialState: ITodoState = {
@@ -9,10 +18,32 @@ const initialState: ITodoState = {
 };
 
 export const todoSlice = createSlice({
-    name: "todo",
+    name: "todos",
     initialState,
     reducers: {
-        addTodo: (state, action: PayloadAction<object>) => {
+        updateText: (state, action: PayloadAction<string>) => {},
+        deleteTodo: (state, action: PayloadAction<number>) => {
+            const filterTodo = state.value.filter((todo: any) => todo.id !== action.payload);
+            state.value = filterTodo;
+
+            //update database
+            const id = action.payload;
+            deleteReq(id).then((data) => {
+                toast(`${data.title} Deleted! ❌`);
+            });
+        },
+        completeTodo: (state, action: PayloadAction<number>) => {
+            const newTodos = [...state.value];
+            newTodos[action.payload].isComplete = true;
+            state.value = newTodos;
+
+            //update database
+            const id = newTodos[action.payload].id;
+            putReq(id, newTodos[action.payload]).then((data) => {
+                toast(`${data.title} Completed! ✔️`);
+            });
+        },
+        addTodo: (state, action: PayloadAction<todoObject>) => {
             state.value.push(action.payload);
         },
         setDataBaseState: (state, action: PayloadAction<[]>) => {
@@ -21,6 +52,6 @@ export const todoSlice = createSlice({
     },
 });
 
-export const { addTodo, setDataBaseState } = todoSlice.actions;
+export const { addTodo, setDataBaseState, completeTodo, deleteTodo } = todoSlice.actions;
 
 export default todoSlice.reducer;

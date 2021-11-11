@@ -6,6 +6,7 @@ import IPage from "../Interfaces/pages/page";
 import { GoDiffAdded } from "react-icons/go";
 import { useDispatch } from "react-redux";
 import { addTodo, setDataBaseState } from "../features/todoSlice";
+import { getReq } from "../Api/function";
 
 const Div = styled.div`
     display: grid;
@@ -20,20 +21,10 @@ const Home: FC<IPage> = (props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        fetch("https://localhost:5001/api/Todo")
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                setTodos(data);
-                dispatch(setDataBaseState(data));
-                //data.forEach((element: object) => {
-                //    dispatch(setState(element));
-                //});
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        getReq().then((res) => {
+            setTodos(res);
+            dispatch(setDataBaseState(res));
+        });
     }, []);
 
     return (
