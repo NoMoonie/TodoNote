@@ -37,22 +37,22 @@ namespace TodoApi.Controllers{
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutTodo(int id, [FromBody] Todo todo){
+        public async Task<ActionResult<Todo>> PutTodo(int id, [FromBody] Todo todo){
             if(id != todo.Id){
                 return BadRequest();
             }
             await _todorepository.Update(todo);
-            return NoContent();
+            return todo;
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteTodo(int id){
+        public async Task<ActionResult<Todo>> DeleteTodo(int id){
             var TodoToDelete = await _todorepository.Get(id);
             if(TodoToDelete == null){
                 return NotFound();
             }
             await _todorepository.Delete(TodoToDelete.Id);
-            return NoContent();
+            return TodoToDelete;
         }
 
 
