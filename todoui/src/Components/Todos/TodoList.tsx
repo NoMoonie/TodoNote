@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import AddTodoModal from "./AddTodoModal";
 import Button from "../Button/Button";
 import { AnimatePresence } from "framer-motion";
+import { useSelector } from "react-redux";
+import { RootState } from "../../App/Store";
 
 const Ul = styled.ul`
     margin: 0;
@@ -141,10 +143,12 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
         setValue("");
     };
 
+    const testTodos = useSelector((state: RootState) => state.todos.value);
+
     return (
         <Wrapper>
             <Ul>
-                {todos.map((item: any, index: number) => {
+                {testTodos.map((item: any, index: number) => {
                     return (
                         <Todo
                             id={item.id}
