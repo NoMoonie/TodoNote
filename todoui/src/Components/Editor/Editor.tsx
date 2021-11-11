@@ -7,6 +7,9 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CodeEditor } from "../CodeEditor/CodeEditor";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../App/Store";
+import { setSavedText, setText } from "../../features/editorSlice";
 
 const MarkDownStyle = styled.div`
     background-color: ${(props) => props.theme.markdown.backgroundcolor};
@@ -69,9 +72,13 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
     const [isSaved, setIsSaved] = useState(true);
     const [edit, setEdit] = useState(false);
 
+    const selected = useSelector((state: RootState) => state.selectedTodo.value);
+    const dispatch = useDispatch();
     useEffect(() => {
-        setValue(todo.text);
-    }, [todo.id]);
+        setValue(selected.text);
+        dispatch(setText(selected.text));
+        dispatch(setSavedText(selected.text));
+    }, [selected.id]);
 
     return (
         <Div>

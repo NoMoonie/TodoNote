@@ -1,16 +1,14 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
 import ITodoList from "../../Interfaces/todo/todolist";
 import Todo from "./Todo";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AddTodoModal from "./AddTodoModal";
-import Button from "../Button/Button";
-import { AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../App/Store";
 import { addTodo, completeTodo, deleteTodo } from "../../features/todoSlice";
-import { deleteReq, postReq, putReq } from "../../Api/function";
+import { postReq } from "../../Api/function";
+import { selectTodo, setIndex } from "../../features/selectedTodoSlice";
 
 const Ul = styled.ul`
     margin: 0;
@@ -68,15 +66,17 @@ const ToastStyle = styled(ToastContainer).attrs({
     }
 `;
 
-const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) => {
+const TodoList: FC<ITodoList> = ({}) => {
     const [value, setValue] = useState("");
 
     const dispatch = useDispatch();
+    const selectedTodo = useSelector((state: RootState) => state.selectedTodo.value);
+    const Todos = useSelector((state: RootState) => state.todos.value);
 
     const setEditorText = (e: any, index: any) => {
-        const filterTodo = todos.filter((todo: any) => todo.id == e.target.id);
-        //filterTodo[0].index = index;
-        setTodo(filterTodo[0]);
+        const filterTodo = Todos.filter((todo: any) => todo.id == e.target.id);
+        dispatch(setIndex(index));
+        dispatch(selectTodo(filterTodo[0]));
     };
 
     const addTodoTo = (text: string) => {
@@ -107,8 +107,6 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
         setValue("");
     };
 
-    const Todos = useSelector((state: RootState) => state.todos.value);
-
     return (
         <Wrapper>
             <Ul>
@@ -119,7 +117,7 @@ const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) =
                             key={item.id}
                             isComplete={item.isComplete}
                             title={item.title}
-                            isSelected={todo}
+                            isSelected={selectedTodo}
                             onClick={setEditorText}
                             onComplete={completeTodoTo}
                             onRemove={removeTodo}
