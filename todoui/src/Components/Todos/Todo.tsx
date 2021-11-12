@@ -2,8 +2,9 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import ITodo from "../../Interfaces/todo/todos";
 import { AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
+import { motion } from "framer-motion";
 
-const Li = styled.li<{ isComplete?: boolean }>`
+const Li = styled(motion.li)<{ isComplete?: boolean }>`
     display: grid;
     grid-template-columns: 1fr 0.2fr;
     color: ${(props) => (props.isComplete ? props.theme.todo.complete : props.theme.todo.notcomplete)};
@@ -46,7 +47,15 @@ const Button = styled.button<{ isComplete: boolean }>`
 
 const Todo: FC<ITodo> = ({ title, isComplete, isSelected, id, onClick, onComplete, index, onRemove }) => {
     return (
-        <Li id={id} isComplete={isComplete}>
+        <Li
+            key={id}
+            id={id}
+            isComplete={isComplete}
+            layout
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ x: -100, opacity: 0 }}
+        >
             <P id={id} onClick={(e) => onClick(e, index)} isSelected={isSelected.value.id == id}>
                 {title}
             </P>

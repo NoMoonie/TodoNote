@@ -165,21 +165,23 @@ const TodoList: FC<ITodoList> = ({}) => {
     return (
         <Wrapper>
             <Ul>
-                {Todos.map((item: any, index: number) => {
-                    return (
-                        <Todo
-                            id={item.id}
-                            key={item.id}
-                            isComplete={item.isComplete}
-                            title={item.title}
-                            isSelected={selectedTodo}
-                            onClick={setEditorText}
-                            onComplete={complete}
-                            onRemove={remove}
-                            index={index}
-                        />
-                    );
-                })}
+                <AnimatePresence initial={false}>
+                    {Todos.map((item: any, index: number) => {
+                        return (
+                            <Todo
+                                id={item.id}
+                                key={item.id}
+                                isComplete={item.isComplete}
+                                title={item.title}
+                                isSelected={selectedTodo}
+                                onClick={setEditorText}
+                                onComplete={complete}
+                                onRemove={remove}
+                                index={index}
+                            />
+                        );
+                    })}
+                </AnimatePresence>
             </Ul>
             <AnimatePresence exitBeforeEnter={true}>
                 {isModal && <NotSavedModal handleSave={handleSave} handleClose={handelClose} />}
