@@ -11,7 +11,7 @@ import { putReq } from "../../Api/function";
 import { RootState } from "../../App/Store";
 import { useDispatch, useSelector } from "react-redux";
 import { updateText } from "../../features/todoSlice";
-import { setIsSaved, setSavedText } from "../../features/editorSlice";
+import { setIsOpen, setIsSaved, setSavedText } from "../../features/editorSlice";
 import { selectTodo } from "../../features/selectedTodoSlice";
 
 const Nav = styled.nav`
@@ -40,15 +40,18 @@ const Div = styled.div`
     }
 `;
 
-const NavBar: FC<IToolbar> = ({ setEdit, edit }) => {
+const NavBar: FC<IToolbar> = ({ edit }) => {
     const editor = useSelector((state: RootState) => state.editor.value);
     const selectedTodo = useSelector((state: RootState) => state.selectedTodo);
+
     const dispatch = useDispatch();
+
     const saveText = () => {
+        if (!edit) return;
+        if (selectedTodo.value.id === 0) return;
         const newText = editor.text;
         const savedText = editor.savedText;
         if (newText === savedText) return;
-
         const updatedTodo = {
             id: selectedTodo.value.id,
             title: selectedTodo.value.title,
@@ -63,6 +66,12 @@ const NavBar: FC<IToolbar> = ({ setEdit, edit }) => {
             toast(`${data.title} Saved! ✔️`);
         });
     };
+
+    const checkIfCompleted = () => {
+        if (selectedTodo.value.isComplete) {
+        } else dispatch(setIsOpen(!edit));
+    };
+
     return (
         <Nav>
             <Div>
@@ -72,7 +81,7 @@ const NavBar: FC<IToolbar> = ({ setEdit, edit }) => {
                 </span>
             </Div>
             <Ul>
-                <NavItems icon={<AiOutlineEdit />} onClick={() => setEdit(!edit)} />
+                <NavItems icon={<AiOutlineEdit />} onClick={() => checkIfCompleted()} />
                 <NavItems icon={<AiOutlineSave />} onClick={() => saveText()} />
                 <NavItems icon={<IoIosArrowDown />}>
                     <DropDown />
