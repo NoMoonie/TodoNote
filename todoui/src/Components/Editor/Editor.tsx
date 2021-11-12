@@ -70,7 +70,8 @@ const Div = styled.div`
 export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
     const [value, setValue] = useState("");
     const [isSaved, setIsSaved] = useState(true);
-    const [edit, setEdit] = useState(false);
+
+    const isOpen = useSelector((state: RootState) => state.editor.value.isOpen);
 
     const selected = useSelector((state: RootState) => state.selectedTodo.value);
     const dispatch = useDispatch();
@@ -89,11 +90,10 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                 setTodos={setTodos}
                 todos={todos}
                 setIsSaved={setIsSaved}
-                edit={edit}
-                setEdit={setEdit}
+                edit={isOpen}
             />
-            <Wrapper edit={edit}>
-                {edit ? <CodeEditor value={value} onChange={setValue} /> : <div></div>}
+            <Wrapper edit={isOpen}>
+                {isOpen ? <CodeEditor value={value} onChange={setValue} /> : <div></div>}
                 <MarkDownStyle>
                     <ReactMarkdown
                         children={value}
