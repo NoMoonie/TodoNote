@@ -3,12 +3,13 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 const Div = styled(motion.div)`
+    z-index: 100;
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: #0000006e;
+    background-color: #000000e1;
     display: flex;
     justify-content: center;
     align-items: center;
