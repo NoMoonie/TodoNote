@@ -7,6 +7,12 @@ import { IoIosArrowDown } from "react-icons/io";
 
 import NavItems from "./NavItems";
 import DropDown from "./DropDown";
+import { putReq } from "../../Api/function";
+import { RootState } from "../../App/Store";
+import { useDispatch, useSelector } from "react-redux";
+import { updateText } from "../../features/todoSlice";
+import { setIsOpen, setIsSaved, setSavedText } from "../../features/editorSlice";
+import { selectTodo } from "../../features/selectedTodoSlice";
 
 const Nav = styled.nav`
     display: grid;
@@ -34,50 +40,48 @@ const Div = styled.div`
     }
 `;
 
-const NavBar: FC<IToolbar> = ({ todo, newText, isSaved, setIsSaved, setTodos, todos, setEdit, edit }) => {
-    const saveText = () => {
-        const oldText = todo.text;
-        const updateText = newText;
+const NavBar: FC<IToolbar> = ({ edit }) => {
+    const editor = useSelector((state: RootState) => state.editor.value);
+    const selectedTodo = useSelector((state: RootState) => state.selectedTodo);
 
+    const dispatch = useDispatch();
+
+    const saveText = () => {
+        if (!edit) return;
+        if (selectedTodo.value.id === 0) return;
+        const newText = editor.text;
+        const savedText = editor.savedText;
+        if (newText === savedText) return;
         const updatedTodo = {
-            id: todo.id,
-            title: todo.title,
-            isComplete: todo.isComplete,
+            id: selectedTodo.value.id,
+            title: selectedTodo.value.title,
+            isComplete: selectedTodo.value.isComplete,
             text: newText,
         };
-
-        if (oldText === updateText) {
-            return;
-        }
-
-        const newTodos = [...todos];
-        newTodos[todo.index].text = newText;
-        setTodos(newTodos);
-        setIsSaved(true);
-
-        fetch(`https://localhost:5001/api/Todo?id=${todo.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updatedTodo),
-        })
-            .then((res) => {
-                console.log(res);
-                toast(`${todo.title} Saved! ✔️`);
-            })
-            .catch((err) => console.log(err));
+        dispatch(setIsSaved(true));
+        dispatch(selectTodo(updatedTodo));
+        dispatch(setSavedText(newText));
+        dispatch(updateText({ text: newText, index: selectedTodo.index }));
+        putReq(selectedTodo.value.id, updatedTodo).then((data) => {
+            toast(`${data.title} Saved! ✔️`);
+        });
     };
+
+    const checkIfCompleted = () => {
+        if (selectedTodo.value.isComplete) {
+        } else dispatch(setIsOpen(!edit));
+    };
+
     return (
         <Nav>
             <Div>
                 <span>
-                    {todo.title}
-                    {isSaved ? "" : " *"}
+                    {selectedTodo.value.title}
+                    {editor.isSaved ? "" : " *"}
                 </span>
             </Div>
             <Ul>
-                <NavItems icon={<AiOutlineEdit />} onClick={() => setEdit(!edit)} />
+                <NavItems icon={<AiOutlineEdit />} onClick={() => checkIfCompleted()} />
                 <NavItems icon={<AiOutlineSave />} onClick={() => saveText()} />
                 <NavItems icon={<IoIosArrowDown />}>
                     <DropDown />

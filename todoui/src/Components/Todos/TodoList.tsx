@@ -1,11 +1,16 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
 import ITodoList from "../../Interfaces/todo/todolist";
 import Todo from "./Todo";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AddTodoModal from "./AddTodoModal";
-import Button from "../Button/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../App/Store";
+import { addTodo, completeTodo, deleteTodo, updateText } from "../../features/todoSlice";
+import { postReq, putReq } from "../../Api/function";
+import { selectTodo, setIndex } from "../../features/selectedTodoSlice";
+import { setIsOpen, setIsSaved, setSavedText } from "../../features/editorSlice";
+import NotSavedModal from "../Modals/NotSavedModal";
 import { AnimatePresence } from "framer-motion";
 
 const Ul = styled.ul`
@@ -64,103 +69,122 @@ const ToastStyle = styled(ToastContainer).attrs({
     }
 `;
 
-const TodoList: FC<ITodoList> = ({ children, todos, setTodos, todo, setTodo }) => {
+const TodoList: FC<ITodoList> = ({}) => {
     const [value, setValue] = useState("");
+    const [isModal, setIsModal] = useState(false);
+    const [data, setData] = useState({
+        todo: {
+            id: 0,
+            title: "",
+            isComplete: false,
+            text: "",
+        },
+        index: 0,
+    });
+
+    const dispatch = useDispatch();
+    const selectedTodo = useSelector((state: RootState) => state.selectedTodo);
+    const Todos = useSelector((state: RootState) => state.todos.value);
+    const editor = useSelector((state: RootState) => state.editor.value);
 
     const setEditorText = (e: any, index: any) => {
-        const filterTodo = todos.filter((todo: any) => todo.id == e.target.id);
-        filterTodo[0].index = index;
-        setTodo(filterTodo[0]);
+        if (!editor.isSaved) {
+            const filterTodo = Todos.filter((todo: any) => todo.id == e.target.id);
+            setData({
+                todo: filterTodo[0],
+                index: index,
+            });
+            setIsModal(true);
+            return;
+        }
+        const filterTodo = Todos.filter((todo: any) => todo.id == e.target.id);
+        if (filterTodo[0].isComplete) dispatch(setIsOpen(false));
+        dispatch(setIndex(index));
+        dispatch(selectTodo(filterTodo[0]));
     };
 
-    const addTodo = (text: string) => {
+    const add = (text: string) => {
         const newTodo = {
             id: 0,
             title: text,
             isComplete: false,
             text: `# ${text}`,
         };
-        fetch("https://localhost:5001/api/Todo", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newTodo),
-        })
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                const newTodos: any = [...todos, data];
-                setTodos(newTodos);
-                setTodo(data);
-                toast(`${text} Added!`);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        postReq(newTodo).then((data) => {
+            dispatch(addTodo(data));
+            toast(`${data.title} Added!`);
+        });
     };
 
-    const completeTodo = (index: number) => {
-        const newTodos: any = [...todos];
-        newTodos[index].isComplete = true;
-        setTodos(newTodos);
-        fetch(`https://localhost:5001/api/Todo?id=${newTodos[index].id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newTodos[index]),
-        })
-            .then((res) => {
-                console.log(res);
-                toast(`${newTodos[index].title} Completed! ✔️`);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const complete = (index: number) => {
+        dispatch(completeTodo(index));
+        dispatch(setIsOpen(false));
     };
 
-    const removeTodo = (id: number) => {
-        const filterTodo = todos.filter((todo: any) => todo.id !== id);
-        const deletedTodo = todos.filter((todo: any) => todo.id === id);
-        setTodos(filterTodo);
-        fetch(`https://localhost:5001/api/Todo?id=${id}`, {
-            method: "DELETE",
-        })
-            .then((res) => {
-                toast(`${deletedTodo[0].title} Deleted! ❌`);
-            })
-            .catch((err) => {});
+    const remove = (id: number) => {
+        dispatch(deleteTodo(id));
     };
 
-    const HandleSubmit = (e: any) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
         if (!value) return;
-        addTodo(value);
+        add(value);
         setValue("");
+    };
+
+    const handelClose = () => {
+        setIsModal(false);
+    };
+
+    const handleSave = () => {
+        if (!editor.isOpen) return;
+        if (selectedTodo.value.id === 0) return;
+        const newText = editor.text;
+        const savedText = editor.savedText;
+        if (newText === savedText) return;
+        const updatedTodo = {
+            id: selectedTodo.value.id,
+            title: selectedTodo.value.title,
+            isComplete: selectedTodo.value.isComplete,
+            text: newText,
+        };
+        dispatch(setIsSaved(true));
+        dispatch(selectTodo(updatedTodo));
+        dispatch(setSavedText(newText));
+        dispatch(updateText({ text: newText, index: selectedTodo.index }));
+        putReq(selectedTodo.value.id, updatedTodo).then((data) => {
+            toast(`${data.title} Saved! ✔️`);
+        });
+
+        setIsModal(false);
+        if (data.todo.isComplete) dispatch(setIsOpen(false));
+        dispatch(setIndex(data.index));
+        dispatch(selectTodo(data.todo));
     };
 
     return (
         <Wrapper>
             <Ul>
-                {todos.map((item: any, index: number) => {
+                {Todos.map((item: any, index: number) => {
                     return (
                         <Todo
                             id={item.id}
                             key={item.id}
                             isComplete={item.isComplete}
                             title={item.title}
-                            isSelected={todo}
+                            isSelected={selectedTodo}
                             onClick={setEditorText}
-                            onComplete={completeTodo}
-                            onRemove={removeTodo}
+                            onComplete={complete}
+                            onRemove={remove}
                             index={index}
                         />
                     );
                 })}
             </Ul>
-            <InputWrapper onSubmit={HandleSubmit}>
+            <AnimatePresence exitBeforeEnter={true}>
+                {isModal && <NotSavedModal handleSave={handleSave} handleClose={handelClose} />}
+            </AnimatePresence>
+            <InputWrapper onSubmit={handleSubmit}>
                 <input
                     type="text"
                     maxLength={25}

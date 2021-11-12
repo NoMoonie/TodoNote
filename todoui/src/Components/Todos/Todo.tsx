@@ -47,7 +47,7 @@ const Button = styled.button<{ isComplete: boolean }>`
 const Todo: FC<ITodo> = ({ title, isComplete, isSelected, id, onClick, onComplete, index, onRemove }) => {
     return (
         <Li id={id} isComplete={isComplete}>
-            <P id={id} onClick={(e) => onClick(e, index)} isSelected={isSelected.id == id}>
+            <P id={id} onClick={(e) => onClick(e, index)} isSelected={isSelected.value.id == id}>
                 {title}
             </P>
 

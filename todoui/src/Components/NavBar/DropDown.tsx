@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React, { FC } from "react";
 import styled from "styled-components";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaUndo } from "react-icons/fa";
 
 interface DropDownItem {
     icon?: any;
@@ -53,6 +53,7 @@ const DropDown: FC = () => {
             <DropDownItem icon={<FaHome />}>Home</DropDownItem>
             <DropDownItem>About</DropDownItem>
             <DropDownItem>Setting</DropDownItem>
+            <DropDownItem icon={<FaUndo />}>Set selected to uncomplete</DropDownItem>
         </Div>
     );
 };

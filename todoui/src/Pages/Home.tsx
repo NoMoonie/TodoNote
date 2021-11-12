@@ -4,6 +4,9 @@ import { Editor } from "../Components/Editor/Editor";
 import TodoList from "../Components/Todos/TodoList";
 import IPage from "../Interfaces/pages/page";
 import { GoDiffAdded } from "react-icons/go";
+import { useDispatch } from "react-redux";
+import { addTodo, setDataBaseState } from "../features/todoSlice";
+import { getReq } from "../Api/function";
 
 const Div = styled.div`
     display: grid;
@@ -15,17 +18,13 @@ const Home: FC<IPage> = (props) => {
     const [todos, setTodos] = useState([]);
     const [todo, setTodo] = useState({});
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        fetch("https://localhost:5001/api/Todo")
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                setTodos(data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        getReq().then((res) => {
+            setTodos(res);
+            dispatch(setDataBaseState(res));
+        });
     }, []);
 
     return (

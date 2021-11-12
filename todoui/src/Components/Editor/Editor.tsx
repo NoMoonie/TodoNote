@@ -7,6 +7,9 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CodeEditor } from "../CodeEditor/CodeEditor";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../App/Store";
+import { setSavedText, setText } from "../../features/editorSlice";
 
 const MarkDownStyle = styled.div`
     background-color: ${(props) => props.theme.markdown.backgroundcolor};
@@ -67,11 +70,16 @@ const Div = styled.div`
 export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
     const [value, setValue] = useState("");
     const [isSaved, setIsSaved] = useState(true);
-    const [edit, setEdit] = useState(false);
 
+    const isOpen = useSelector((state: RootState) => state.editor.value.isOpen);
+
+    const selected = useSelector((state: RootState) => state.selectedTodo.value);
+    const dispatch = useDispatch();
     useEffect(() => {
-        setValue(todo.text);
-    }, [todo.id]);
+        setValue(selected.text);
+        dispatch(setText(selected.text));
+        dispatch(setSavedText(selected.text));
+    }, [selected.id]);
 
     return (
         <Div>
@@ -82,11 +90,10 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                 setTodos={setTodos}
                 todos={todos}
                 setIsSaved={setIsSaved}
-                edit={edit}
-                setEdit={setEdit}
+                edit={isOpen}
             />
-            <Wrapper edit={edit}>
-                {edit ? <CodeEditor value={value} onChange={setValue} /> : <div></div>}
+            <Wrapper edit={isOpen}>
+                {isOpen ? <CodeEditor value={value} onChange={setValue} /> : <div></div>}
                 <MarkDownStyle>
                     <ReactMarkdown
                         children={value}

@@ -6,5 +6,4 @@ export default interface IToolbar {
     todos: any;
     setIsSaved: any;
     edit: boolean;
-    setEdit: any;
 }
