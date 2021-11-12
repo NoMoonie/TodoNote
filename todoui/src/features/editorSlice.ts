@@ -4,6 +4,7 @@ interface IEditor {
     text: string;
     isSaved: boolean;
     savedText: string;
+    isOpen: boolean;
 }
 
 interface IEditorState {
@@ -15,6 +16,7 @@ const initialState: IEditorState = {
         text: "",
         savedText: "",
         isSaved: true,
+        isOpen: false,
     },
 };
 
@@ -31,9 +33,12 @@ export const editorSlice = createSlice({
         setIsSaved: (state, action: PayloadAction<boolean>) => {
             state.value.isSaved = action.payload;
         },
+        setIsOpen: (state, action: PayloadAction<boolean>) => {
+            state.value.isOpen = action.payload;
+        },
     },
 });
 
-export const { setText, setIsSaved, setSavedText } = editorSlice.actions;
+export const { setText, setIsSaved, setSavedText, setIsOpen } = editorSlice.actions;
 
 export default editorSlice.reducer;
