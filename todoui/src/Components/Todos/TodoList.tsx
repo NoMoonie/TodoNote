@@ -6,9 +6,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../App/Store";
-import { addTodo, completeTodo, deleteTodo } from "../../features/todoSlice";
-import { postReq } from "../../Api/function";
+import { addTodo, completeTodo, deleteTodo, updateText } from "../../features/todoSlice";
+import { postReq, putReq } from "../../Api/function";
 import { selectTodo, setIndex } from "../../features/selectedTodoSlice";
+import { setIsOpen, setIsSaved, setSavedText } from "../../features/editorSlice";
+import NotSavedModal from "../Modals/NotSavedModal";
+import { AnimatePresence } from "framer-motion";
 
 const Ul = styled.ul`
     margin: 0;
@@ -68,18 +71,39 @@ const ToastStyle = styled(ToastContainer).attrs({
 
 const TodoList: FC<ITodoList> = ({}) => {
     const [value, setValue] = useState("");
+    const [isModal, setIsModal] = useState(false);
+    const [data, setData] = useState({
+        todo: {
+            id: 0,
+            title: "",
+            isComplete: false,
+            text: "",
+        },
+        index: 0,
+    });
 
     const dispatch = useDispatch();
-    const selectedTodo = useSelector((state: RootState) => state.selectedTodo.value);
+    const selectedTodo = useSelector((state: RootState) => state.selectedTodo);
     const Todos = useSelector((state: RootState) => state.todos.value);
+    const editor = useSelector((state: RootState) => state.editor.value);
 
     const setEditorText = (e: any, index: any) => {
+        if (!editor.isSaved) {
+            const filterTodo = Todos.filter((todo: any) => todo.id == e.target.id);
+            setData({
+                todo: filterTodo[0],
+                index: index,
+            });
+            setIsModal(true);
+            return;
+        }
         const filterTodo = Todos.filter((todo: any) => todo.id == e.target.id);
+        if (filterTodo[0].isComplete) dispatch(setIsOpen(false));
         dispatch(setIndex(index));
         dispatch(selectTodo(filterTodo[0]));
     };
 
-    const addTodoTo = (text: string) => {
+    const add = (text: string) => {
         const newTodo = {
             id: 0,
             title: text,
@@ -92,19 +116,50 @@ const TodoList: FC<ITodoList> = ({}) => {
         });
     };
 
-    const completeTodoTo = (index: number) => {
+    const complete = (index: number) => {
         dispatch(completeTodo(index));
+        dispatch(setIsOpen(false));
     };
 
-    const removeTodo = (id: number) => {
+    const remove = (id: number) => {
         dispatch(deleteTodo(id));
     };
 
-    const HandleSubmit = (e: any) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
         if (!value) return;
-        addTodoTo(value);
+        add(value);
         setValue("");
+    };
+
+    const handelClose = () => {
+        setIsModal(false);
+    };
+
+    const handleSave = () => {
+        if (!editor.isOpen) return;
+        if (selectedTodo.value.id === 0) return;
+        const newText = editor.text;
+        const savedText = editor.savedText;
+        if (newText === savedText) return;
+        const updatedTodo = {
+            id: selectedTodo.value.id,
+            title: selectedTodo.value.title,
+            isComplete: selectedTodo.value.isComplete,
+            text: newText,
+        };
+        dispatch(setIsSaved(true));
+        dispatch(selectTodo(updatedTodo));
+        dispatch(setSavedText(newText));
+        dispatch(updateText({ text: newText, index: selectedTodo.index }));
+        putReq(selectedTodo.value.id, updatedTodo).then((data) => {
+            toast(`${data.title} Saved! ✔️`);
+        });
+
+        setIsModal(false);
+        if (data.todo.isComplete) dispatch(setIsOpen(false));
+        dispatch(setIndex(data.index));
+        dispatch(selectTodo(data.todo));
     };
 
     return (
@@ -119,14 +174,17 @@ const TodoList: FC<ITodoList> = ({}) => {
                             title={item.title}
                             isSelected={selectedTodo}
                             onClick={setEditorText}
-                            onComplete={completeTodoTo}
-                            onRemove={removeTodo}
+                            onComplete={complete}
+                            onRemove={remove}
                             index={index}
                         />
                     );
                 })}
             </Ul>
-            <InputWrapper onSubmit={HandleSubmit}>
+            <AnimatePresence exitBeforeEnter={true}>
+                {isModal && <NotSavedModal handleSave={handleSave} handleClose={handelClose} />}
+            </AnimatePresence>
+            <InputWrapper onSubmit={handleSubmit}>
                 <input
                     type="text"
                     maxLength={25}
