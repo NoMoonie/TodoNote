@@ -12,8 +12,18 @@ import { selectTodo } from "../../features/selectedTodoSlice";
 import { updateText } from "../../features/todoSlice";
 import { putReq } from "../../Api/function";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
-const EditorWrapper = styled.div`
+const anim1 = {
+    hidden: {
+        opasity: 0,
+        width: "0%",
+    },
+    show: { opasity: 1, width: "100%" },
+    exit: { opasity: 0, width: "0%" },
+};
+
+const EditorWrapper = styled(motion.div)<{ isOpen: boolean }>`
     background-color: ${(props) => props.theme.editor.backgroundcolor};
     color: ${(props) => props.theme.editor.textcolor};
     .CodeMirror {
@@ -38,7 +48,7 @@ export const CodeEditor: FC<ICodeEditor> = ({ value, onChange }) => {
         } else dispatch(setIsSaved(true));
     };
     return (
-        <EditorWrapper>
+        <EditorWrapper isOpen={editor.isOpen} layout variants={anim1} initial="hidden" animate="show" exit="exit">
             <ControlledEditor
                 className="code-editor"
                 onBeforeChange={HandleChange}

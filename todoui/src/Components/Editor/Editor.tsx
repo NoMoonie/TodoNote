@@ -10,8 +10,18 @@ import { CodeEditor } from "../CodeEditor/CodeEditor";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../App/Store";
 import { setSavedText, setText } from "../../features/editorSlice";
+import { AnimatePresence, motion } from "framer-motion";
 
-const MarkDownStyle = styled.div`
+const anim1 = {
+    hidden: {
+        opasity: 0,
+        width: "0%",
+    },
+    show: { opasity: 1, width: "95.58%" },
+    exit: { opasity: 0, width: "0%" },
+};
+
+const MarkDownStyle = styled(motion.div)`
     background-color: ${(props) => props.theme.markdown.backgroundcolor};
     color: ${(props) => props.theme.markdown.textcolor};
     padding-left: 1em;
@@ -93,33 +103,35 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                 edit={isOpen}
             />
             <Wrapper edit={isOpen}>
-                {isOpen ? <CodeEditor value={value} onChange={setValue} /> : <div></div>}
-                <MarkDownStyle>
-                    <ReactMarkdown
-                        children={value}
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                            code({ node, inline, className, children, ...props }) {
-                                const match = /language-(\w+)/.exec(className || "");
-                                return !inline && match ? (
-                                    <SyntaxHighlighter
-                                        children={String(children).replace(/\n$/, "")}
-                                        style={dracula}
-                                        language={match[1]}
-                                        PreTag="div"
-                                    />
-                                ) : (
-                                    <code className={className} {...props}></code>
-                                );
-                            },
-                            a: ({ node, ...props }) => (
-                                <a target="_blank" href={props.href}>
-                                    {props.children}
-                                </a>
-                            ),
-                        }}
-                    ></ReactMarkdown>
-                </MarkDownStyle>
+                <AnimatePresence exitBeforeEnter={true}>
+                    <CodeEditor value={value} onChange={setValue} />
+                    <MarkDownStyle layout variants={anim1} initial="hidden" animate="show" exit="exit">
+                        <ReactMarkdown
+                            children={value}
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                                code({ node, inline, className, children, ...props }) {
+                                    const match = /language-(\w+)/.exec(className || "");
+                                    return !inline && match ? (
+                                        <SyntaxHighlighter
+                                            children={String(children).replace(/\n$/, "")}
+                                            style={dracula}
+                                            language={match[1]}
+                                            PreTag="div"
+                                        />
+                                    ) : (
+                                        <code className={className} {...props}></code>
+                                    );
+                                },
+                                a: ({ node, ...props }) => (
+                                    <a target="_blank" href={props.href}>
+                                        {props.children}
+                                    </a>
+                                ),
+                            }}
+                        ></ReactMarkdown>
+                    </MarkDownStyle>
+                </AnimatePresence>
             </Wrapper>
         </Div>
     );
