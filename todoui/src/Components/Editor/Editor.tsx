@@ -13,12 +13,9 @@ import { setSavedText, setText } from "../../features/editorSlice";
 import { AnimatePresence, motion } from "framer-motion";
 
 const anim1 = {
-    hidden: {
-        opasity: 0,
-        width: "0%",
-    },
-    show: { opasity: 1, width: "95.58%" },
-    exit: { opasity: 0, width: "0%" },
+    hidden: { width: "0%" },
+    show: { width: "95.58%" },
+    exit: { width: "0%" },
 };
 
 const MarkDownStyle = styled(motion.div)`
@@ -103,7 +100,7 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                 edit={isOpen}
             />
             <Wrapper edit={isOpen}>
-                <AnimatePresence exitBeforeEnter={true}>
+                <AnimatePresence initial={false} exitBeforeEnter={true}>
                     <CodeEditor value={value} onChange={setValue} />
                     <MarkDownStyle layout variants={anim1} initial="hidden" animate="show" exit="exit">
                         <ReactMarkdown

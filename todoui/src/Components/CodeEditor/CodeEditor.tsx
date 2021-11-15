@@ -15,16 +15,12 @@ import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 
 const anim1 = {
-    hidden: {
-        opasity: 0,
-        width: "0%",
-    },
-    show: { opasity: 1, width: "100%" },
-    exit: { opasity: 0, width: "0%" },
+    hidden: { width: "0%" },
+    show: { width: "100%" },
+    exit: { width: "0%" },
 };
 
-const EditorWrapper = styled(motion.div)<{ isOpen: boolean }>`
-    background-color: ${(props) => props.theme.editor.backgroundcolor};
+const EditorWrapper = styled(motion.div)`
     color: ${(props) => props.theme.editor.textcolor};
     .CodeMirror {
         height: 90vh;
@@ -48,39 +44,41 @@ export const CodeEditor: FC<ICodeEditor> = ({ value, onChange }) => {
         } else dispatch(setIsSaved(true));
     };
     return (
-        <EditorWrapper isOpen={editor.isOpen} layout variants={anim1} initial="hidden" animate="show" exit="exit">
-            <ControlledEditor
-                className="code-editor"
-                onBeforeChange={HandleChange}
-                value={value}
-                options={{
-                    lineWrapping: true,
-                    lint: false,
-                    mode: "markdown",
-                    theme: "nord",
-                    extraKeys: {
-                        "Ctrl-S": () => {
-                            if (selectedTodo.value.id === 0) return;
-                            const newText = editor.text;
-                            const savedText = editor.savedText;
-                            if (newText === savedText) return;
-                            const updatedTodo = {
-                                id: selectedTodo.value.id,
-                                title: selectedTodo.value.title,
-                                isComplete: selectedTodo.value.isComplete,
-                                text: newText,
-                            };
-                            dispatch(setIsSaved(true));
-                            dispatch(selectTodo(updatedTodo));
-                            dispatch(setSavedText(newText));
-                            dispatch(updateText({ text: newText, index: selectedTodo.index }));
-                            putReq(selectedTodo.value.id, updatedTodo).then((data) => {
-                                toast(`${data.title} Saved! ✔️`);
-                            });
+        <EditorWrapper layout variants={anim1} initial="hidden" animate="show" exit="exit">
+            {editor.isOpen && (
+                <ControlledEditor
+                    className="code-editor"
+                    onBeforeChange={HandleChange}
+                    value={value}
+                    options={{
+                        lineWrapping: true,
+                        lint: false,
+                        mode: "markdown",
+                        theme: "nord",
+                        extraKeys: {
+                            "Ctrl-S": () => {
+                                if (selectedTodo.value.id === 0) return;
+                                const newText = editor.text;
+                                const savedText = editor.savedText;
+                                if (newText === savedText) return;
+                                const updatedTodo = {
+                                    id: selectedTodo.value.id,
+                                    title: selectedTodo.value.title,
+                                    isComplete: selectedTodo.value.isComplete,
+                                    text: newText,
+                                };
+                                dispatch(setIsSaved(true));
+                                dispatch(selectTodo(updatedTodo));
+                                dispatch(setSavedText(newText));
+                                dispatch(updateText({ text: newText, index: selectedTodo.index }));
+                                putReq(selectedTodo.value.id, updatedTodo).then((data) => {
+                                    toast(`${data.title} Saved! ✔️`);
+                                });
+                            },
                         },
-                    },
-                }}
-            />
+                    }}
+                />
+            )}
         </EditorWrapper>
     );
 };
