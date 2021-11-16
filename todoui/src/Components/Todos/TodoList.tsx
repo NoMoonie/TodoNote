@@ -63,6 +63,9 @@ const ToastStyle = styled(ToastContainer).attrs({
         background-color: ${(props) => props.theme.toast.backgroundcolor};
         color: ${(props) => props.theme.toast.textcolor};
         border: ${(props) => props.theme.toast.border};
+        font-size: 10pt;
+        min-height: 16px;
+        border-radius: 0px;
     }
     .progress {
         background-color: ${(props) => props.theme.toast.progressbarcolor};
@@ -204,7 +207,7 @@ const TodoList: FC<ITodoList> = ({}) => {
                     placeholder="Add todo..."
                 />
             </InputWrapper>
-            <ToastStyle limit={4} pauseOnHover={false} autoClose={3000} hideProgressBar position="top-center" />
+            <ToastStyle limit={4} pauseOnHover={false} autoClose={3000} hideProgressBar position="bottom-right" />
         </Wrapper>
     );
 };
