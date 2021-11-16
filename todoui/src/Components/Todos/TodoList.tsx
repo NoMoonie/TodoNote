@@ -9,7 +9,7 @@ import { RootState } from "../../App/Store";
 import { addTodo, completeTodo, deleteTodo, updateText } from "../../features/todoSlice";
 import { postReq, putReq } from "../../Api/function";
 import { selectTodo, setIndex } from "../../features/selectedTodoSlice";
-import { setIsOpen, setIsSaved, setSavedText } from "../../features/editorSlice";
+import { setIsOpen, setIsSaved, setSavedText, setText } from "../../features/editorSlice";
 import NotSavedModal from "../Modals/NotSavedModal";
 import { AnimatePresence } from "framer-motion";
 
@@ -123,6 +123,15 @@ const TodoList: FC<ITodoList> = ({}) => {
 
     const remove = (id: number) => {
         dispatch(deleteTodo(id));
+        dispatch(setText(""));
+        dispatch(setSavedText(""));
+        const selectedDefault = {
+            id: 0,
+            title: "",
+            isComplete: false,
+            text: "",
+        };
+        dispatch(selectTodo(selectedDefault));
     };
 
     const handleSubmit = (e: any) => {
