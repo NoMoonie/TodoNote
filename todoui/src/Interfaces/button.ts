@@ -1,4 +1,6 @@
 export default interface IButton {
-    onClick: any;
+    onClick?: any;
     primary?: boolean;
+    br?: string;
+    anim?: boolean;
 }
