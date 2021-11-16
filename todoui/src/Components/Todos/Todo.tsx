@@ -45,6 +45,12 @@ const Button = styled.button<{ isComplete: boolean }>`
     }
 `;
 
+const variants = {
+    hidden: { y: 100, opacity: 0 },
+    show: { y: 0, opacity: 1 },
+    exit: { x: -100, opacity: 0 },
+};
+
 const Todo: FC<ITodo> = ({ title, isComplete, isSelected, id, onClick, onComplete, index, onRemove }) => {
     return (
         <Li
@@ -52,9 +58,14 @@ const Todo: FC<ITodo> = ({ title, isComplete, isSelected, id, onClick, onComplet
             id={id}
             isComplete={isComplete}
             layout
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ x: -100, opacity: 0 }}
+            variants={variants}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+            transition={{
+                duration: 0.2,
+                delay: index * 0.05,
+            }}
         >
             <P id={id} onClick={(e) => onClick(e, index)} isSelected={isSelected.value.id == id}>
                 {title}
