@@ -40,14 +40,14 @@ const Div = styled.div`
     }
 `;
 
-const NavBar: FC<IToolbar> = ({ edit }) => {
+const NavBar: FC<IToolbar> = () => {
     const editor = useSelector((state: RootState) => state.editor.value);
     const selectedTodo = useSelector((state: RootState) => state.selectedTodo);
 
     const dispatch = useDispatch();
 
     const saveText = () => {
-        if (!edit) return;
+        if (!editor.isOpen) return;
         if (selectedTodo.value.id === 0) return;
         const newText = editor.text;
         const savedText = editor.savedText;
@@ -69,7 +69,7 @@ const NavBar: FC<IToolbar> = ({ edit }) => {
 
     const checkIfCompleted = () => {
         if (selectedTodo.value.isComplete) {
-        } else dispatch(setIsOpen(!edit));
+        } else dispatch(setIsOpen(!editor.isOpen));
     };
 
     return (
