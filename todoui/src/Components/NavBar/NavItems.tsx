@@ -12,8 +12,8 @@ const Li = styled(motion.li)`
     :hover {
         background-color: ${(props) => props.theme.editor.backgroundcolor};
     }
-    color: ${(props) => props.theme.button.textcolor};
-    border: 1px solid white;
+    color: ${(props) => props.theme.navbar.textcolor};
+    border: ${(props) => props.theme.navbar.border};
     border-radius: 5px;
     cursor: pointer;
     width: 3rem;

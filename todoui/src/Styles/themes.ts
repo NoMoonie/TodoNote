@@ -45,12 +45,18 @@ export const darkTheme = {
         textcolor: "#fff",
         focus: "#404040",
     },
+    navbar: {
+        backgroundcolor: "none",
+        textcolor: "#fff",
+        border: "1px solid #b3b3b3",
+    },
 };
 
 export const lightTheme = {
     backgroundcolor: "#121212",
     textcolor: "#fff",
     secondarycolor: "#181818",
+    link: "#bf336d",
     font: "",
     todo: {
         backgroundcolor: "#282828",
@@ -71,16 +77,31 @@ export const lightTheme = {
         blockquote: "#121212",
     },
     button: {
-        backgroundcolor: "#404040",
+        backgroundcolor: "#282828",
         textcolor: "#fff",
+        hover: "#404040",
+        border: "none",
     },
     buttonprimary: {
-        backgroundcolor: "",
-        textcolor: "",
-    },
-    toast: {
         backgroundcolor: "#181818",
         textcolor: "#fff",
+        hover: "#282828",
+        border: "1px solid #fff",
+    },
+    toast: {
+        backgroundcolor: "#282828",
+        textcolor: "#fff",
         progressbarcolor: "",
+        border: "1px solid #404040",
+    },
+    input: {
+        backgroundcolor: "#282828",
+        textcolor: "#fff",
+        focus: "#404040",
+    },
+    navbar: {
+        backgroundcolor: "none",
+        textcolor: "#fff",
+        border: "1px solid #b3b3b3",
     },
 };
