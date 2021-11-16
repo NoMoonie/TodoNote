@@ -100,35 +100,35 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                 edit={isOpen}
             />
             <Wrapper edit={isOpen}>
-                <AnimatePresence initial={false} exitBeforeEnter={true}>
+                <AnimatePresence>
                     <CodeEditor value={value} onChange={setValue} />
-                    <MarkDownStyle layout variants={anim1} initial="hidden" animate="show" exit="exit">
-                        <ReactMarkdown
-                            children={value}
-                            remarkPlugins={[remarkGfm]}
-                            components={{
-                                code({ node, inline, className, children, ...props }) {
-                                    const match = /language-(\w+)/.exec(className || "");
-                                    return !inline && match ? (
-                                        <SyntaxHighlighter
-                                            children={String(children).replace(/\n$/, "")}
-                                            style={dracula}
-                                            language={match[1]}
-                                            PreTag="div"
-                                        />
-                                    ) : (
-                                        <code className={className} {...props}></code>
-                                    );
-                                },
-                                a: ({ node, ...props }) => (
-                                    <a target="_blank" href={props.href}>
-                                        {props.children}
-                                    </a>
-                                ),
-                            }}
-                        ></ReactMarkdown>
-                    </MarkDownStyle>
                 </AnimatePresence>
+                <MarkDownStyle layoutId="editor" variants={anim1} initial="hidden" animate="show" exit="exit">
+                    <ReactMarkdown
+                        children={value}
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                            code({ node, inline, className, children, ...props }) {
+                                const match = /language-(\w+)/.exec(className || "");
+                                return !inline && match ? (
+                                    <SyntaxHighlighter
+                                        children={String(children).replace(/\n$/, "")}
+                                        style={dracula}
+                                        language={match[1]}
+                                        PreTag="div"
+                                    />
+                                ) : (
+                                    <code className={className} {...props}></code>
+                                );
+                            },
+                            a: ({ node, ...props }) => (
+                                <a target="_blank" href={props.href}>
+                                    {props.children}
+                                </a>
+                            ),
+                        }}
+                    ></ReactMarkdown>
+                </MarkDownStyle>
             </Wrapper>
         </Div>
     );
