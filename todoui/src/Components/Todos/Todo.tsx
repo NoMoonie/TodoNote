@@ -4,13 +4,16 @@ import ITodo from "../../Interfaces/todo/todos";
 import { AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
 import { motion } from "framer-motion";
 
-const Li = styled(motion.li)<{ isComplete?: boolean }>`
+const Li = styled(motion.li)<{ isComplete?: boolean; isSelected?: boolean }>`
     display: grid;
     grid-template-columns: 1fr 0.2fr;
     color: ${(props) => (props.isComplete ? props.theme.todo.complete : props.theme.todo.notcomplete)};
     text-decoration: ${(props) => (props.isComplete ? "line-through" : "")};
     height: 3em;
     margin: 1em;
+    border-radius: 0.5em;
+    overflow: hidden;
+    border: 1px solid ${(props) => (props.isSelected ? props.theme.todo.selected : props.theme.todo.backgroundcolor)};
 `;
 
 const P = styled.p<{ isSelected?: boolean }>`
@@ -19,7 +22,7 @@ const P = styled.p<{ isSelected?: boolean }>`
     display: flex;
     align-items: center;
     cursor: pointer;
-    background-color: ${(props) => (props.isSelected ? props.theme.todo.selected : props.theme.todo.backgroundcolor)};
+    //background-color: ${(props) => (props.isSelected ? props.theme.todo.selected : props.theme.todo.backgroundcolor)};
     padding-left: 1em;
     :hover {
         background-color: ${(props) => props.theme.todo.hover};
@@ -57,6 +60,7 @@ const Todo: FC<ITodo> = ({ title, isComplete, isSelected, id, onClick, onComplet
             key={id}
             id={id}
             isComplete={isComplete}
+            isSelected={isSelected.value.id == id}
             layout
             variants={variants}
             initial="hidden"
