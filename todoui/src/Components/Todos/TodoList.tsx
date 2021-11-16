@@ -91,6 +91,7 @@ const TodoList: FC<ITodoList> = ({}) => {
     const editor = useSelector((state: RootState) => state.editor.value);
 
     const setEditorText = (e: any, index: any) => {
+        if (selectedTodo.value.id == e.target.id) return;
         if (!editor.isSaved) {
             const filterTodo = Todos.filter((todo: any) => todo.id == e.target.id);
             setData({
