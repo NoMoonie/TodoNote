@@ -15,6 +15,7 @@ const dropIn = {
 };
 
 const Div = styled(motion.div)`
+    z-index: 100;
     user-select: none;
     position: absolute;
     right: 1em;
