@@ -10,8 +10,16 @@ import { CodeEditor } from "../CodeEditor/CodeEditor";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../App/Store";
 import { setSavedText, setText } from "../../features/editorSlice";
+import { motion, AnimatePresence } from "framer-motion";
 
-const MarkDownStyle = styled.div`
+const anim1 = {
+    hidden: { width: "0%" },
+    show: { width: "95.58%" },
+    exit: { width: "0%" },
+};
+
+const MarkDownStyle = styled(motion.div)`
+    z-index: 99;
     background-color: ${(props) => props.theme.markdown.backgroundcolor};
     color: ${(props) => props.theme.markdown.textcolor};
     padding-left: 1em;
@@ -69,7 +77,6 @@ const Div = styled.div`
 
 export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
     const [value, setValue] = useState("");
-    const [isSaved, setIsSaved] = useState(true);
 
     const isOpen = useSelector((state: RootState) => state.editor.value.isOpen);
 
@@ -83,43 +90,37 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
 
     return (
         <Div>
-            <NavBar
-                todo={todo}
-                newText={value}
-                isSaved={isSaved}
-                setTodos={setTodos}
-                todos={todos}
-                setIsSaved={setIsSaved}
-                edit={isOpen}
-            />
+            <NavBar />
             <Wrapper edit={isOpen}>
                 {isOpen ? <CodeEditor value={value} onChange={setValue} /> : <div></div>}
-                <MarkDownStyle>
-                    <ReactMarkdown
-                        children={value}
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                            code({ node, inline, className, children, ...props }) {
-                                const match = /language-(\w+)/.exec(className || "");
-                                return !inline && match ? (
-                                    <SyntaxHighlighter
-                                        children={String(children).replace(/\n$/, "")}
-                                        style={dracula}
-                                        language={match[1]}
-                                        PreTag="div"
-                                    />
-                                ) : (
-                                    <code className={className} {...props}></code>
-                                );
-                            },
-                            a: ({ node, ...props }) => (
-                                <a target="_blank" href={props.href}>
-                                    {props.children}
-                                </a>
-                            ),
-                        }}
-                    ></ReactMarkdown>
-                </MarkDownStyle>
+                <AnimatePresence initial={false}>
+                    <MarkDownStyle layout variants={anim1} initial="hidden" animate="show" exit="exit">
+                        <ReactMarkdown
+                            children={value}
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                                code({ node, inline, className, children, ...props }) {
+                                    const match = /language-(\w+)/.exec(className || "");
+                                    return !inline && match ? (
+                                        <SyntaxHighlighter
+                                            children={String(children).replace(/\n$/, "")}
+                                            style={dracula}
+                                            language={match[1]}
+                                            PreTag="div"
+                                        />
+                                    ) : (
+                                        <code className={className} {...props}></code>
+                                    );
+                                },
+                                a: ({ node, ...props }) => (
+                                    <a target="_blank" href={props.href}>
+                                        {props.children}
+                                    </a>
+                                ),
+                            }}
+                        ></ReactMarkdown>
+                    </MarkDownStyle>
+                </AnimatePresence>
             </Wrapper>
         </Div>
     );

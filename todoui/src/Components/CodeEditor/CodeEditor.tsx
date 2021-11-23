@@ -14,7 +14,6 @@ import { putReq } from "../../Api/function";
 import { toast } from "react-toastify";
 
 const EditorWrapper = styled.div`
-    background-color: ${(props) => props.theme.editor.backgroundcolor};
     color: ${(props) => props.theme.editor.textcolor};
     .CodeMirror {
         height: 90vh;
@@ -42,7 +41,7 @@ export const CodeEditor: FC<ICodeEditor> = ({ value, onChange }) => {
             <ControlledEditor
                 className="code-editor"
                 onBeforeChange={HandleChange}
-                value={value}
+                value={editor.text}
                 options={{
                     lineWrapping: true,
                     lint: false,

@@ -9,7 +9,7 @@ import { RootState } from "../../App/Store";
 import { addTodo, completeTodo, deleteTodo, updateText } from "../../features/todoSlice";
 import { postReq, putReq } from "../../Api/function";
 import { selectTodo, setIndex } from "../../features/selectedTodoSlice";
-import { setIsOpen, setIsSaved, setSavedText } from "../../features/editorSlice";
+import { setIsOpen, setIsSaved, setSavedText, setText } from "../../features/editorSlice";
 import NotSavedModal from "../Modals/NotSavedModal";
 import { AnimatePresence } from "framer-motion";
 
@@ -63,6 +63,9 @@ const ToastStyle = styled(ToastContainer).attrs({
         background-color: ${(props) => props.theme.toast.backgroundcolor};
         color: ${(props) => props.theme.toast.textcolor};
         border: ${(props) => props.theme.toast.border};
+        font-size: 10pt;
+        min-height: 16px;
+        border-radius: 0px;
     }
     .progress {
         background-color: ${(props) => props.theme.toast.progressbarcolor};
@@ -88,6 +91,7 @@ const TodoList: FC<ITodoList> = ({}) => {
     const editor = useSelector((state: RootState) => state.editor.value);
 
     const setEditorText = (e: any, index: any) => {
+        if (selectedTodo.value.id == e.target.id) return;
         if (!editor.isSaved) {
             const filterTodo = Todos.filter((todo: any) => todo.id == e.target.id);
             setData({
@@ -123,6 +127,15 @@ const TodoList: FC<ITodoList> = ({}) => {
 
     const remove = (id: number) => {
         dispatch(deleteTodo(id));
+        dispatch(setText(""));
+        dispatch(setSavedText(""));
+        const selectedDefault = {
+            id: 0,
+            title: "",
+            isComplete: false,
+            text: "",
+        };
+        dispatch(selectTodo(selectedDefault));
     };
 
     const handleSubmit = (e: any) => {
@@ -165,21 +178,23 @@ const TodoList: FC<ITodoList> = ({}) => {
     return (
         <Wrapper>
             <Ul>
-                {Todos.map((item: any, index: number) => {
-                    return (
-                        <Todo
-                            id={item.id}
-                            key={item.id}
-                            isComplete={item.isComplete}
-                            title={item.title}
-                            isSelected={selectedTodo}
-                            onClick={setEditorText}
-                            onComplete={complete}
-                            onRemove={remove}
-                            index={index}
-                        />
-                    );
-                })}
+                <AnimatePresence initial={false}>
+                    {Todos.map((item: any, index: number) => {
+                        return (
+                            <Todo
+                                id={item.id}
+                                key={item.id}
+                                isComplete={item.isComplete}
+                                title={item.title}
+                                isSelected={selectedTodo}
+                                onClick={setEditorText}
+                                onComplete={complete}
+                                onRemove={remove}
+                                index={index}
+                            />
+                        );
+                    })}
+                </AnimatePresence>
             </Ul>
             <AnimatePresence exitBeforeEnter={true}>
                 {isModal && <NotSavedModal handleSave={handleSave} handleClose={handelClose} />}
@@ -193,7 +208,7 @@ const TodoList: FC<ITodoList> = ({}) => {
                     placeholder="Add todo..."
                 />
             </InputWrapper>
-            <ToastStyle limit={4} pauseOnHover={false} autoClose={3000} hideProgressBar position="top-center" />
+            <ToastStyle limit={4} pauseOnHover={false} autoClose={3000} hideProgressBar position="bottom-right" />
         </Wrapper>
     );
 };
