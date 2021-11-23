@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const anim1 = {
     hidden: { width: "0%" },
-    show: { width: "95.58%" },
+    show: { width: "100%" },
     exit: { width: "0%" },
 };
 
@@ -22,11 +22,14 @@ const MarkDownStyle = styled(motion.div)`
     z-index: 99;
     background-color: ${(props) => props.theme.markdown.backgroundcolor};
     color: ${(props) => props.theme.markdown.textcolor};
-    padding-left: 1em;
-    padding-right: 1em;
+
     word-wrap: break-word;
     height: 100%;
     overflow-y: auto;
+    .markdown {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
     blockquote {
         background-color: ${(props) => props.theme.markdown.blockquote};
         padding: 0.5em;
@@ -47,7 +50,6 @@ const MarkDownStyle = styled(motion.div)`
         display: flex;
         align-items: top;
     }
-
     input[type="checkbox"] {
         appearance: none;
         width: 1em;
@@ -96,6 +98,7 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                 <AnimatePresence initial={false}>
                     <MarkDownStyle layout variants={anim1} initial="hidden" animate="show" exit="exit">
                         <ReactMarkdown
+                            className="markdown"
                             children={value}
                             remarkPlugins={[remarkGfm]}
                             components={{
@@ -109,7 +112,9 @@ export const Editor: FC<IEditor> = ({ todo, setTodos, todos }) => {
                                             PreTag="div"
                                         />
                                     ) : (
-                                        <code className={className} {...props}></code>
+                                        <code className={className} {...props}>
+                                            {children}
+                                        </code>
                                     );
                                 },
                                 a: ({ node, ...props }) => (
