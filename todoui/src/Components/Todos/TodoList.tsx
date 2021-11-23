@@ -123,12 +123,30 @@ const TodoList: FC<ITodoList> = ({}) => {
     const complete = (index: number) => {
         dispatch(completeTodo(index));
         dispatch(setIsOpen(false));
+        if (selectedTodo.value.id === 0) return;
+        const newText = editor.text;
+        const savedText = editor.savedText;
+        if (newText === savedText) return;
+        const updatedTodo = {
+            id: selectedTodo.value.id,
+            title: selectedTodo.value.title,
+            isComplete: selectedTodo.value.isComplete,
+            text: newText,
+        };
+        dispatch(setIsSaved(true));
+        dispatch(selectTodo(updatedTodo));
+        dispatch(setSavedText(newText));
+        dispatch(updateText({ text: newText, index: selectedTodo.index }));
+        putReq(selectedTodo.value.id, updatedTodo).then((data) => {
+            //toast(`${data.title} Saved! ✔️`);
+        });
     };
 
     const remove = (id: number) => {
         dispatch(deleteTodo(id));
         dispatch(setText(""));
         dispatch(setSavedText(""));
+        dispatch(setIsSaved(true));
         const selectedDefault = {
             id: 0,
             title: "",
